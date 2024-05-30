@@ -1,0 +1,62 @@
+import React, { useEffect, useState, useCallback } from "react";
+import { login } from "../../utils/auth";
+import { Notification } from "../../components/utils/Notifications";
+import Login from "./Login";
+import { getProcessingCompanyByOwner } from "../../utils/processorCompany";
+import { Loader } from "../../components/utils";
+import ActivateClientAccount from "./ActivateClientAccount";
+import CompanyOverviewPage from "./CompanyOverview";
+
+const Client = () => {
+  const [processor, setProcessor] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const isAuthenticated = window.auth.isAuthenticated;
+
+  const fetchProcessorCompany = useCallback(async () => {
+    try {
+      setLoading(true);
+      setProcessor(
+        await getProcessingCompanyByOwner().then(async (res) => {
+          console.log(res);
+          return res.Ok;
+        })
+      );
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  });
+
+  console.log("Processor", processor);
+
+  useEffect(() => {
+    fetchProcessorCompany();
+  }, []);
+
+  return (
+    <>
+      <Notification />
+      {isAuthenticated ? (
+        !loading ? (
+          processor?.name ? (
+            <main>
+              <CompanyOverviewPage processorCompany={processor} />
+            </main>
+          ) : (
+            <ActivateClientAccount
+              fetchClient={fetchProcessorCompany}
+            />
+          )
+        ) : (
+          <Loader />
+        )
+      ) : (
+        <Login login={login} />
+      )}
+    </>
+  );
+};
+
+export default Client;
