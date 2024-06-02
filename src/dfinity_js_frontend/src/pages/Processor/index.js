@@ -2,22 +2,22 @@ import React, { useEffect, useState, useCallback } from "react";
 import { login } from "../../utils/auth";
 import { Notification } from "../../components/utils/Notifications";
 import Login from "./Login";
-import { getDistributorCompanyByOwner } from "../../utils/distributorsCompany";
+import { getProcessingCompanyByOwner } from "../../utils/processorCompany";
 import { Loader } from "../../components/utils";
-import ActivateSupplierAccount from "./ActivateSupplierAccount";
 import CompanyOverviewPage from "./CompanyOverview";
+import ActivateProcessorAccount from "./ActivateProcessorAccount";
 
-const Supplier = () => {
-  const [distributor, setDistributor] = useState({});
+const Processor = () => {
+  const [processor, setProcessor] = useState({});
   const [loading, setLoading] = useState(false);
 
   const isAuthenticated = window.auth.isAuthenticated;
 
-  const fetchDistributor = useCallback(async () => {
+  const fetchProcessorCompany = useCallback(async () => {
     try {
       setLoading(true);
-      setDistributor(
-        await getDistributorCompanyByOwner().then(async (res) => {
+      setProcessor(
+        await getProcessingCompanyByOwner().then(async (res) => {
           console.log(res);
           return res.Ok;
         })
@@ -29,10 +29,10 @@ const Supplier = () => {
     }
   });
 
-  console.log("Distributor", distributor);
+  console.log("Processor", processor);
 
   useEffect(() => {
-    fetchDistributor();
+    fetchProcessorCompany();
   }, []);
 
   return (
@@ -40,12 +40,14 @@ const Supplier = () => {
       <Notification />
       {isAuthenticated ? (
         !loading ? (
-          distributor?.name ? (
+          processor?.name ? (
             <main>
-              <CompanyOverviewPage distributor={distributor} />
+              <CompanyOverviewPage processorCompany={processor} />
             </main>
           ) : (
-            <ActivateSupplierAccount fetchDistributor={fetchDistributor} />
+            <ActivateProcessorAccount
+              fetchClient={fetchProcessorCompany}
+            />
           )
         ) : (
           <Loader />
@@ -57,4 +59,4 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default Processor;

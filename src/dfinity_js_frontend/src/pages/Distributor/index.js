@@ -2,22 +2,22 @@ import React, { useEffect, useState, useCallback } from "react";
 import { login } from "../../utils/auth";
 import { Notification } from "../../components/utils/Notifications";
 import Login from "./Login";
-import { getProcessingCompanyByOwner } from "../../utils/processorCompany";
+import { getDistributorCompanyByOwner } from "../../utils/distributorsCompany";
 import { Loader } from "../../components/utils";
 import CompanyOverviewPage from "./CompanyOverview";
-import ActivateProcessorAccount from "./ActivateProcessorAccount";
+import ActivateDistributorAccount from "./ActivateDistributorAccount";
 
-const Client = () => {
-  const [processor, setProcessor] = useState({});
+const Distributor = () => {
+  const [distributor, setDistributor] = useState({});
   const [loading, setLoading] = useState(false);
 
   const isAuthenticated = window.auth.isAuthenticated;
 
-  const fetchProcessorCompany = useCallback(async () => {
+  const fetchDistributor = useCallback(async () => {
     try {
       setLoading(true);
-      setProcessor(
-        await getProcessingCompanyByOwner().then(async (res) => {
+      setDistributor(
+        await getDistributorCompanyByOwner().then(async (res) => {
           console.log(res);
           return res.Ok;
         })
@@ -29,10 +29,10 @@ const Client = () => {
     }
   });
 
-  console.log("Processor", processor);
+  console.log("Distributor", distributor);
 
   useEffect(() => {
-    fetchProcessorCompany();
+    fetchDistributor();
   }, []);
 
   return (
@@ -40,14 +40,12 @@ const Client = () => {
       <Notification />
       {isAuthenticated ? (
         !loading ? (
-          processor?.name ? (
+          distributor?.name ? (
             <main>
-              <CompanyOverviewPage processorCompany={processor} />
+              <CompanyOverviewPage distributor={distributor} />
             </main>
           ) : (
-            <ActivateProcessorAccount
-              fetchClient={fetchProcessorCompany}
-            />
+            <ActivateDistributorAccount fetchDistributor={fetchDistributor} />
           )
         ) : (
           <Loader />
@@ -59,4 +57,4 @@ const Client = () => {
   );
 };
 
-export default Client;
+export default Distributor;

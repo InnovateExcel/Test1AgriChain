@@ -231,7 +231,7 @@ export default function HomeLandingpagePage() {
                   </Link>
                
                   <Link
-                    to="/suppliers?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
+                    to="/distributors?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
                     className="no-underline"
                   >
                     <Button
@@ -244,7 +244,7 @@ export default function HomeLandingpagePage() {
                   </Link>
                  
                   <Link
-                    to="/clients?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
+                    to="/processors?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
                     className="no-underline"
                   >
                     <Button

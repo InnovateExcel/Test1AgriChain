@@ -5,7 +5,7 @@ import { Img, Text, Button, Header } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 import { createDistributorsCompany } from "../../../utils/distributorsCompany";
 
-export default function ActivateSupplierAccount({ fetchDistributor }) {
+export default function ActivateDistributorAccount({ fetchDistributor }) {
   // usestate to store the form data
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");

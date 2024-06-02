@@ -6,9 +6,9 @@ import "./styles/index.css";
 import "./styles/font.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Driver from "./pages/Driver";
-import Clients from "./pages/Client";
-import Supplier from "./pages/Supplier";
 import Farmer from "./pages/Farmer";
+import Processor from "./pages/Processor";
+import Distributor from "./pages/Distributor";
 
 const App = function AppWrapper() {
   return (
@@ -16,8 +16,8 @@ const App = function AppWrapper() {
       <Routes>
         <Route path="/" element={<HomeLandingpagePage />} />
         <Route path="/drivers" element={<Driver />} />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/suppliers" element={<Supplier />} />
+        <Route path="/processors" element={<Processor />} />
+        <Route path="/distributors" element={<Distributor />} />
         <Route path="/farmers" element={<Farmer />} />
       </Routes>
     </Router>
