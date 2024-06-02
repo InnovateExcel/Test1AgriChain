@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Modal, } from "react-bootstrap";
+import { Button as BButton, Modal, } from "react-bootstrap";
+import { Button } from "../../../components/utils";
 import { getAllDeliveryTenders, getTenderForDeliveryDetailsForDistributorCompany } from "../../../utils/tender";
 import PayDriver from "./PayDriver";
 import { payDriver } from "../../../utils/distributorsCompany";
@@ -105,7 +106,7 @@ const ViewTender = ({deliveryDetailId, companyId}) => {
                 {/* Arrange the values within the modal without table */}
                 <p><strong>Tender Title: </strong>{tender?.tenderTitle}</p>
                 <p><strong>Tender Description: </strong>{tender?.tenderDescription}</p>
-                <p><strong>Delivery Weight: </strong>{tender.deliveryWeight && tender?.deliveryWeight.toString()}</p>
+                <p><strong>Delivery Weight: </strong>{tender.deliveryWeight && tender?.deliveryWeight.toString()} Kg</p>
                 <p><strong>Cost Per Weight: </strong>{tender.costPerWeight && (tender?.costPerWeight/BigInt(10**8)).toString()}  ICP</p>
                 <p><strong>Additional Cost: </strong>{tender.additionalCost && (tender?.additionalCost/BigInt(10**8)).toString()} ICP</p>
                 <p><strong>Total Cost: </strong>{tender.totalCost && (tender?.totalCost/BigInt(10**8)).toString()} ICP</p>

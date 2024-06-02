@@ -75,15 +75,14 @@ const AddDeliveryDetails = ({ saleAdvert}) => {
           <Loader />
         ) : (
           <>
-            <BButton
+            <Button
               color="blue_gray_900_02"
-              size="12xl"
               className="min-w-[115px] rounded-[28px]"
-              variant="primary"
+              size="12xl"
               onClick={handleShow}
             >
               Create Delivery Details 
-            </BButton>
+            </Button>
   
             <Modal size="lg"
             className="w-[50%]" centered show={show} onHide={handleClose}>
@@ -91,36 +90,36 @@ const AddDeliveryDetails = ({ saleAdvert}) => {
                 <Modal.Title>Create Delivery Details</Modal.Title>    
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                    <FloatingLabel controlId="floatingInput" label="Pickup Date">
+                <Form className="max-w-lg mx-auto mb-2 p-2 bg-white shadow-md rounded-lg">
+                    <FloatingLabel controlId="floatingInput" label="Pickup Date"className="my-2">
                         <Form.Control
                             type="date"
                             placeholder="Pickup Date"
                             onChange={(e) => setPickupDate(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Pickup Region">
+                    <FloatingLabel controlId="floatingInput" label="Pickup Region"className="my-2">
                         <Form.Control
                             type="text"
                             placeholder="Pickup Region"
                             onChange={(e) => setPickupRegion(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Delivered Region">
+                    <FloatingLabel controlId="floatingInput" label="Delivered Region"className="my-2">
                         <Form.Control
                             type="text"
                             placeholder="Delivered Region"
                             onChange={(e) => setDeliveredRegion(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Delivery Priority">
+                    <FloatingLabel controlId="floatingInput" label="Delivery Priority"className="my-2">
                         <Form.Control
                             type="text"
                             placeholder="Delivery Priority"
                             onChange={(e) => setDeliveryPriority(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Delivery Description">
+                    <FloatingLabel controlId="floatingInput" label="Delivery Description"className="my-2">
                         <Form.Control
                             type="text"
                             placeholder="Delivery Description"
@@ -153,13 +152,14 @@ const AddDeliveryDetails = ({ saleAdvert}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button
-                variant="secondary"
+                
                 onClick={handleClose}
                 >
                 Close
                 </Button>
                 <Button
-                variant="primary"
+                color="blue_gray_900_02"
+                className="min-w-[115px] rounded-[28px]"
                 onClick={() => {
                     handleSubmit();
                     handleClose();

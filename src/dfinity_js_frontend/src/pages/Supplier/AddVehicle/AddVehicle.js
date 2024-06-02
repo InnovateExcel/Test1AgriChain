@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Button as BButton, Modal, Form, FloatingLabel } from "react-bootstrap";
+import { Button } from "../../../components/utils";
 
 
 const AddVehicle = ({save}) => {
@@ -16,10 +16,10 @@ const AddVehicle = ({save}) => {
     return (
         <>
             <Button
-                onClick={handleShow}
-                color="blue_gray_900_02"
+               color="blue_gray_900_02"
+               className="min-w-[115px] rounded-[28px]"
                 size="12xl"
-                className="min-w-[115px] rounded-[28px]"
+                onClick={handleShow}
             >
                 Add Vehicle
             </Button>
@@ -27,7 +27,7 @@ const AddVehicle = ({save}) => {
                 <Modal.Header closeButton>
                     <Modal.Title>New Vehicle</Modal.Title>
                 </Modal.Header>
-                <Form>
+                <Form >
                     <Modal.Body>
                         <FloatingLabel
                             controlId="inputName"
@@ -87,7 +87,8 @@ const AddVehicle = ({save}) => {
                             Close
                         </Button>
                         <Button
-                            variant="primary"
+                            color="blue_gray_900_02"
+                            className="min-w-[115px] rounded-[28px]"
                             onClick={() => {
                                 save({
                                     vehicleMake,
@@ -98,7 +99,7 @@ const AddVehicle = ({save}) => {
                                 handleClose();
                             }}
                         >
-                            Save Changes
+                            Create
                         </Button>
                     </Modal.Footer>
                 </Form>

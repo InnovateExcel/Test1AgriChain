@@ -41,9 +41,9 @@ function AssignDrivers({ deliveryDetail, save }) {
             onClick={handleShow}
             color="blue_gray_900_02"
             size="11xl"
-            className="min-w-[115px] items-center gap-2 flex rounded-[28px]"
+            className="min-w-[115px] items-center gap-2 flex rounded-[28px] mr-3"
           >
-            Drivers
+            Assign Driver
           </Button>
           <Modal
             size="lg"

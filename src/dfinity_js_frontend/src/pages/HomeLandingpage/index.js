@@ -37,7 +37,7 @@ export default function HomeLandingpagePage() {
                     color="white_A700_01"
                     size="5xl"
                     name="search"
-                    placeholder="Delivery address"
+                    placeholder="Search"
                     value={searchBarValue}
                     onChange={(e) => setSearchBarValue(e)}
                     suffix={
@@ -71,18 +71,18 @@ export default function HomeLandingpagePage() {
                   className="h-[189px] w-[189px] left-0 top-0 m-auto rounded-[50%] absolute"
                 />
                 <Img
-                  src={Images.img_image_693}
+                  src={Images.img_image_a}
                   alt="image693_one"
                   className="h-[179px] w-[17%] bottom-[1%] right-0 m-auto object-cover absolute rounded-[12px]"
                 />
                 <Text
-                  size="17xl"
+                  size="13xl"
                   as="p"
-                  className="w-[85%] top-[21%] right-0 left-0 m-auto !text-blue_gray-900_02 absolute"
+                  className="w-[85%] top-[31%] right-0 left-4 m-auto !text-blue_gray-900_02 absolute"
                 >
-                  The quickest way to
+                  "Transforming Agriculture with Technology 
                   <br />
-                  find your perfect products
+                  for Transparency, Efficiency, and Security."
                 </Text>
               </div>
               <div className="flex flex-row justify-between items-start w-[99%] mt-[271px]">
@@ -91,7 +91,7 @@ export default function HomeLandingpagePage() {
                   as="p"
                   className="mt-2.5 !text-blue_gray-900_02"
                 >
-                  How it works
+                  Key Features
                 </Text>
                 <Img
                   src={Images.img_image_699}
@@ -132,24 +132,16 @@ export default function HomeLandingpagePage() {
                         as="p"
                         className="mt-6 !text-blue_gray-900_03"
                       >
-                        Step
+                          Transparent Supply Chain
                       </Text>
                       <Text
                         size="3xl"
                         as="p"
                         className="mt-[25px] ml-0.5 !text-blue_gray-800_08"
                       >
-                        Enter your location. Type in your
+                       Experience end-to-end visibility in the agricultural supply chain, from farm to table
                       </Text>
-                      <Text
-                        size="3xl"
-                        as="p"
-                        className="w-[97%] mt-1.5 ml-0.5 !text-blue_gray-800_08 !leading-6"
-                      >
-                        address, or pin your location by
-                        <br />
-                        enabling location services.
-                      </Text>
+                    
                     </div>
                   </div>
                 </div>
@@ -161,14 +153,14 @@ export default function HomeLandingpagePage() {
                   />
                   <div className="flex flex-col items-start justify-start mb-[47px] ml-[11px] gap-[25px]">
                     <Text size="8xl" as="p" className="!text-blue_gray-900_03">
-                      Step 2
+                      Efficiency
                     </Text>
                     <Text
                       size="3xl"
                       as="p"
                       className="!text-blue_gray-800_08 !leading-6"
                     >
-                      Now select a Fulfilling Company and a Product item.{" "}
+                     Streamline agricultural operations with real-time data and automated processes for optimal efficiency
                     </Text>
                   </div>
                 </div>
@@ -184,28 +176,23 @@ export default function HomeLandingpagePage() {
                       as="p"
                       className="ml-px !text-blue_gray-900_03"
                     >
-                      Step 3
+                      Trust and Accountability:
                     </Text>
                     <Text
                       size="3xl"
                       as="p"
                       className="mt-[30px] ml-px !text-blue_gray-800_08"
                     >
-                      Settle your payment. Then, sit
+                      Building consumer trust through a secure, traceable, and verifiable network that connects processing companies, 
+                      distributors, farmers, and drivers for efficient transfers.
                     </Text>
-                    <Text
-                      size="4xl"
-                      as="p"
-                      className="mt-1.5 !text-blue_gray-800_08 !leading-[26px]"
-                    >
-                      back and relax as we get you product order ready
-                    </Text>
+
                   </div>
                 </div>
               </div>
               <div className="flex flex-row justify-between items-center w-[99%] mt-[41px]">
                 <Text size="9xl" as="p" className="!text-blue_gray-900_02">
-                  Work with ChainFlow
+                  Access Platform as:
                 </Text>
                 <Img
                   src={Images.img_image_703}
@@ -214,67 +201,22 @@ export default function HomeLandingpagePage() {
                 />
               </div>
               <div className="flex flex-row justify-between items-center w-[98%] mt-[61px]">
-                <div className="flex flex-col items-start justify-start w-[59%] gap-[100px]">
-                  <Img
-                    src={Images.img_image_698}
-                    alt="image698_one"
-                    className="w-[89%] ml-3 object-cover rounded-[12px]"
-                  />
-                  <div className="h-[301px] w-[68%] ml-[38px] relative">
-                    <div className="flex flex-col items-center justify-start w-[65%] h-max gap-[37px] right-[6%] bottom-0 top-0 m-auto absolute">
-                      <div className="flex flex-row justify-center w-full p-[5px] bg-gray-200 shadow-xs rounded-[12px]">
-                        <Text
-                          size="6xl"
-                          as="p"
-                          className="mb-px !text-blue_gray-900_03 text-center"
-                        >
-                          RESTAURANT
-                        </Text>
-                      </div>
-                      <div className="flex flex-row justify-start w-full p-[11px] bg-gray-400_03 shadow-xs rounded-[12px]">
-                        <div className="flex flex-col items-start justify-start w-[63%] mt-[3px] mb-3">
-                          <Text
-                            size="11xl"
-                            as="p"
-                            className="!text-blue_gray-900_02 z-[1]"
-                          >
-                            Proident
-                          </Text>
-                          <div className="h-[146px] w-full mt-[-32px] bg-blue_gray-900_02 shadow-xs rounded-md" />
-                        </div>
-                      </div>
-                    </div>
-                    <Img
-                      src={Images.img_image_700}
-                      alt="image700_one"
-                      className="justify-center h-[301px] w-full left-0 bottom-0 right-0 top-0 m-auto object-cover absolute rounded-[12px]"
-                    />
-                  </div>
-                  <Img
-                    src={Images.img_image_695}
-                    alt="image695_one"
-                    className="w-full object-cover rounded-[12px]"
-                  />
-                </div>
-                <div className="flex flex-col items-start justify-start w-[27%]">
-                  <Text
-                    size="10xl"
-                    as="p"
-                    className="ml-px !text-blue_gray-900_02"
+              
+                <div className="flex flex-row items-start justify-between w-[27%] space-x-[80px]">
+
+                  <Link
+                    to="/farmers?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
+                    className="no-underline"
                   >
-                    As a Driver
-                  </Text>
-                  <Text
-                    size="3xl"
-                    as="p"
-                    className="w-[94%] mt-6 ml-px !text-blue_gray-800_08 !leading-6"
-                  >
-                    Earn money by delivering food
-                    <br />
-                    from restaurants. All you need
-                    <br />
-                    are the skills and a bike
-                  </Text>
+                    <Button
+                      color="gray_200"
+                      size="18xl"
+                      className="mt-[31px] min-w-[214px] rounded-[24px] no-underline border-2 border-blue_gray-900_02"
+                    >
+                      Farmer
+                    </Button>
+                  </Link>
+                 
                   <Link
                     to="/drivers?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
                     className="no-underline"
@@ -284,32 +226,10 @@ export default function HomeLandingpagePage() {
                       size="18xl"
                       className="mt-[31px] min-w-[214px] rounded-[24px] no-underline border-2 border-blue_gray-900_02"
                     >
-                      Drive with us
+                      Driver
                     </Button>
                   </Link>
-                  <Text
-                    size="9xl"
-                    as="p"
-                    className="mt-[174px] ml-px !text-blue_gray-900_02"
-                  >
-                    As a Supplier
-                  </Text>
-                  <Text
-                    size="3xl"
-                    as="p"
-                    className="mt-6 ml-px !text-blue_gray-800_08"
-                  >
-                    ChainFlow helps Supplier
-                  </Text>
-                  <Text
-                    size="3xl"
-                    as="p"
-                    className="w-[88%] mt-[7px] ml-px !text-blue_gray-800_08 !leading-6"
-                  >
-                    grow with online ordering.
-                    <br />
-                    loyalty programs, and more.
-                  </Text>
+               
                   <Link
                     to="/suppliers?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
                     className="no-underline"
@@ -319,37 +239,10 @@ export default function HomeLandingpagePage() {
                       size="18xl"
                       className="mt-[31px] min-w-[214px] rounded-[24px] no-underline border-2 border-blue_gray-900_02"
                     >
-                      Partner with us
+                      Distributor Company
                     </Button>
                   </Link>
-                  <Text
-                    size="9xl"
-                    as="p"
-                    className="mt-[169px] ml-px !text-blue_gray-900_02"
-                  >
-                    As a Client
-                  </Text>
-                  <Text
-                    size="3xl"
-                    as="p"
-                    className="mt-7 ml-px !text-blue_gray-800_08"
-                  >
-                    Be part of a team that&#39;s
-                  </Text>
-                  <Text
-                    size="4xl"
-                    as="p"
-                    className="mt-[13px] ml-px !text-blue_gray-800_08"
-                  >
-                    building a top-notch delivery
-                  </Text>
-                  <Text
-                    size="4xl"
-                    as="p"
-                    className="mt-3 ml-px !text-blue_gray-800_08"
-                  >
-                    service
-                  </Text>
+                 
                   <Link
                     to="/clients?canisterId=br5f7-7uaaa-aaaaa-qaaca-cai"
                     className="no-underline"
@@ -359,14 +252,14 @@ export default function HomeLandingpagePage() {
                       size="18xl"
                       className="mt-[31px] min-w-[214px] rounded-[24px] no-underline border-2 border-blue_gray-900_02"
                     >
-                      Work with us
+                      Processing Company
                     </Button>
                   </Link>
                 </div>
               </div>
               <div className="flex flex-row justify-between items-start w-[99%] mt-[74px]">
                 <Text size="9xl" as="p" className="mt-2 !text-blue_gray-900_02">
-                  Download our app
+                  How it Works
                 </Text>
                 <Img
                   src={Images.img_image_697}
@@ -376,169 +269,80 @@ export default function HomeLandingpagePage() {
               </div>
               <div className="h-[382px] w-full mt-[53px] relative">
                 <div className="flex flex-row justify-center items-center w-full h-full left-0 bottom-0 right-0 top-0 m-auto absolute">
-                  <Button
-                    color="blue_gray_900_02"
-                    size="18xl"
-                    className="z-[1] min-w-[179px] rounded-[15px]"
-                  >
-                    Download
-                  </Button>
-                  <div className="flex flex-row justify-center items-start w-full ml-[-177px]">
+                  
+                  <div className="flex flex-row justify-start items-start w-full space-x-[40px]">
                     <Text
                       size="3xl"
                       as="p"
                       className="w-[46%] mt-[116px] !text-blue_gray-800_08 z-[1] !leading-6"
                     >
-                      Get to experience the most convinite to fulfill you
-                      SupplyChain demands. Our fastest delivery
-                      <br />
-                      service carries a variety of goods and Products from both
-                      <br />
-                      local global fulfilling Companies.
+                      Blockchain technology is the backbone of AgriChain, providing an immutable and 
+                      transparent ledger for all transactions and movements within the agricultural supply chain
                     </Text>
-                    <div className="h-[382px] w-[56%] ml-[-11px] relative">
-                      <Img
-                        src={Images.img_image_692}
-                        alt="image692_one"
-                        className="justify-center h-[382px] w-full left-0 bottom-0 right-0 top-0 m-auto object-cover absolute rounded-[12px]"
-                      />
-                      <Text
-                        size="7xl"
-                        as="p"
-                        className="bottom-[19%] left-[13%] m-auto text-center absolute"
-                      >
-                        0
-                      </Text>
-                    </div>
+
+                    <Text
+                      size="3xl"
+                      as="p"
+                      className="w-[46%] mt-[116px] !text-blue_gray-800_08 z-[1] !leading-6"
+                    >
+                      Smart contracts are self-executing contracts with the terms of the agreement directly written into code.
+                     They play a crucial role in automating and streamlining the supply chain processes on AgriChain 
+                    </Text>
+
                   </div>
                 </div>
                 <div className="h-[23px] w-[23px] bottom-[21%] right-[46%] m-auto bg-gray-200 shadow-xs absolute rounded-[11px]" />
                 <Text
-                  size="11xl"
+                  size="6xl"
                   as="p"
                   className="left-0 top-[15%] m-auto !text-blue_gray-900_02 absolute"
                 >
-                  Order easily
+                  <strong>Blockchain Technology:</strong>
+                    <br />
+                    <br />
+                   Ensuring Transparency and Traceability
                 </Text>
+                <Text
+                  size="6xl"
+                  as="p"
+                  className="right-0 top-[15%] m-auto !text-blue_gray-900_02 absolute"
+                >
+                  <strong>Smart Contracts: </strong>
+                    <br />
+                    <br />
+                    Automating and Streamlining  Supply Chain
+                    <br />
+                    Processes
+                </Text>
+                
               </div>
+
+
+              {/*  */}
+                    
+              {/*  */}
             </div>
           </div>
         </div>
-        <footer className="flex justify-center items-center w-full pl-[63px] pr-14 py-[63px] bg-gray-400_03 shadow-xs rounded-[12px]">
+        <footer className="flex justify-center items-center w-full pl-[63px] pr-14 py-[7px] bg-gray-400_03 shadow-xs rounded-[12px]">
           <div className="flex flex-row justify-center w-full mb-12 mx-auto max-w-[1190px]">
             <div className="flex flex-row justify-center w-full">
               <div className="flex flex-row justify-between items-center w-full gap-[461px]">
                 <Text
-                  size="14xl"
+                  size="10xl"
                   as="p"
-                  className="w-[13%] mt-px !text-blue_gray-900_02"
+                  className="w-[13%] mt-110px !text-blue_gray-900_02"
                 >
-                  CHAIN FLOW
+                  {/* AgriChain♾️ */}
                 </Text>
                 <div className="flex flex-row justify-start items-start w-[49%] gap-[82px]">
                   <div className="flex flex-col items-start justify-start w-[59%] gap-3">
-                    <div className="flex flex-row justify-between w-[77%]">
-                      <Text
-                        size="3xl"
-                        as="p"
-                        className="mb-0.5 !text-blue_gray-900_03"
-                      >
-                        Social
-                      </Text>
-                      <Text
-                        size="3xl"
-                        as="p"
-                        className="!text-blue_gray-700_01"
-                      >
-                        Get help
-                      </Text>
-                    </div>
-                    <div className="flex flex-row justify-between items-start w-full">
-                      <div className="flex flex-col items-start justify-start gap-3">
-                        <a href="facebook">
-                          <Text
-                            size="2xl"
-                            as="p"
-                            className="!text-blue_gray-700_01"
-                          >
-                            Facebook
-                          </Text>
-                        </a>
-                        <ul className="flex flex-col items-center justify-start gap-11">
-                          <li>
-                            <a href="Instagram">
-                              <Text
-                                size="3xl"
-                                as="p"
-                                className="!text-blue_gray-700_01"
-                              >
-                                Instagram
-                              </Text>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="Linkedin">
-                              <Text
-                                size="3xl"
-                                as="p"
-                                className="!text-blue_gray-700_01"
-                              >
-                                Linkedin
-                              </Text>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="flex flex-col items-start justify-start gap-3">
-                        <a href="Partner with us">
-                          <Text
-                            size="2xl"
-                            as="p"
-                            className="!text-blue_gray-700_01"
-                          >
-                            Partner with us
-                          </Text>
-                        </a>
-                        <ul className="flex flex-col items-center justify-start gap-[66px]">
-                          <li>
-                            <a href="Add your restaurant">
-                              <Text
-                                size="2xl"
-                                as="p"
-                                className="!text-blue_gray-800_08"
-                              >
-                                Add your restaurant
-                              </Text>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="Sign up to deliver">
-                              <Text
-                                size="2xl"
-                                as="p"
-                                className="!text-blue_gray-800_08"
-                              >
-                                Sign up to deliver
-                              </Text>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                    
+                    
+                      
+                    
                   </div>
-                  <Text
-                    size="2xl"
-                    as="p"
-                    className="w-[28%] !text-blue_gray-700_01 !leading-[22px]"
-                  >
-                    Read our blog
-                    <br />
-                    Buy gift card
-                    <br />
-                    Restaurants nearby
-                    <br />
-                    Save on first order
-                  </Text>
+                  
                 </div>
               </div>
             </div>

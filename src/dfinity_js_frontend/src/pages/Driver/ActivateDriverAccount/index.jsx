@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Img, Text, Header1, Button, Input } from "../../../components/utils";
 import * as Images from "../../../assets/images";
-
 // import ActivatedriverAccountConnectWalletPage from "../DriverConnectWallet";
-import DriverVehicleInformation from "../DriverVehicleInformation";
 import { createDriver } from "../../../utils/driver";
 
 export default function ActivateDriverAccount({ fetchDriver }) {
@@ -179,18 +177,7 @@ export default function ActivateDriverAccount({ fetchDriver }) {
                       onChange={(e) => setExperience(e.target.value)}
                     />
                   </div>
-                  {/* <div className="flex flex-col items-start justify-center w-[49%] gap-px">
-                    <Text size="3xl" as="p" className="mt-0.5 !text-gray-800">
-                      Company
-                    </Text>
-                    <input
-                      type="text"
-                      name="company"
-                      placeholder="Company"
-                      className="w-full bg-green-50 p-2 rounded-md border border-gray-500 text-black"
-                      onChange={(e) => setCompany(e.target.value)}
-                    />
-                  </div> */}
+         
                 </div>
                 <div className="flex flex-row justify-start w-[92%] mt-3.5 ml-[3px] gap-6">
                   <div className="flex flex-col items-start justify-start w-[49%] gap-[3px]">
@@ -232,8 +219,6 @@ export default function ActivateDriverAccount({ fetchDriver }) {
                 </div>
               </div>
             </div>
-            {/* <DriverVehicleInformation save={addVehicleInfo} /> */}
-            {/* <ActivatedriverAccountConnectWalletPage login={login} /> */}
             <div className="h-px w-[93%] mt-[30px] ml-6 bg-gray-100" />
             </div>
           

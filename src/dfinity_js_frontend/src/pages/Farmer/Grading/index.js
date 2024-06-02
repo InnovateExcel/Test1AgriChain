@@ -31,37 +31,36 @@ function ProductGrading({ product, save }) {
         <Loader />
       ) : (
         <>
-          <BButton
+          <Button
             color="blue_gray_900_02"
-            size="12xl"
             className="min-w-[115px] rounded-[28px]"
-            variant="primary"
+            size="8xl"
             onClick={handleShow}
           >
             Grade & Sort 
-          </BButton>
+          </Button>
 
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Grade Product</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
-                <FloatingLabel controlId="floatingInput" label="Grade">
+              <Form className="max-w-lg mx-auto p-2 bg-white shadow-md rounded-lg">
+                <FloatingLabel controlId="floatingInput" label="Grade" className="my-2">
                   <Form.Control
                     type="text"
                     placeholder="Grade"
                     onChange={(e) => setGrade(e.target.value)}
                   />
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingInput" label="Quantity">
+                <FloatingLabel controlId="floatingInput" label="Quantity (Kg)" className="my-2">
                   <Form.Control
                     type="number"
                     placeholder="Quantity"
                     onChange={(e) => setQuantity(e.target.value)}
                   />
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingInput" label="Price per Kg">
+                <FloatingLabel controlId="floatingInput" label="Price per Kg" className="my-2">
                   <Form.Control
                     type="number"
                     placeholder="Price per Kg"
@@ -79,12 +78,12 @@ function ProductGrading({ product, save }) {
                 Close
               </Button>
               <Button
-                variant="primary"
+                 color="blue_gray_900_02"
+                 className="min-w-[115px] rounded-[28px]"
                 onClick={() => {
                   save({productId, grade, quantity, price});
                   handleClose();
                 }}
-                className="rounded-[28px]"
               >
                 Save
               </Button>

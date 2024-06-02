@@ -13,21 +13,15 @@ import {
 } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 import Wallet from "../../../components/Wallet";
-import {
-  paySupplier,
-} from "../../../utils/processorCompany";
+
 import { toast } from "react-toastify";
-import {
-  assignSupplier,
-  markOrderAsCompleted,
-} from "../../../utils/deliveries";
-import PaySupplier from "../components/PaySupplier";
+
 import AddProduct from "../../product/AddProduct";
 import { createProduct, getGradedProductsForFarmer, getNewProductsForFarmer, getPackagedProductsForFarmer, gradeProduct } from "../../../utils/product";
-import ProductGrading from "../Bids";
+import ProductGrading from "../Grading";
 import ProductPackaging from "../Packaging";
 import SaleAdvert from "../Advert";
-import { getFarmerSalesAdvertsApprovedForFarmer } from "../../../utils/advert";
+import { getFarmerSalesAdvertsApprovedForFarmer, getFarmerSalesAdvertsCompletedForFarmer } from "../../../utils/advert";
 
 const dropDownOptions = [
   { label: "Option1", value: "option1" },
@@ -44,9 +38,13 @@ export default function CompanyOverviewPage({ farmer }) {
   const [gradedProducts, setGradedProducts] = useState([]);
   const [packagedProducts, setPackagedProducts] = useState([]);
   const [approvedAdverts, setApprovedAdverts] = useState([]);
+  const [succesfulAdverts, setSuccesfulAdverts] = useState([]);
+  const [balanceInfo, setBalanceInfo] = useState("0");
   const [tab, setTab] = useState("new");
 
   const { id } = farmer;
+
+  const symbol = "ICP"
 
   const saveProduct = async (data) => {
     try {
@@ -88,57 +86,24 @@ export default function CompanyOverviewPage({ farmer }) {
     }
   };
 
-  // assign supplier to bid
-  const assignSupplierBid = async (orderId, supplierId) => {
-    try {
-      setLoading(true);
-      await assignSupplier(orderId, supplierId);
-      fetchNewOrders();
-      fetchCurrentOrders();
-      toast(<NotificationSuccess text="Supplier assigned successfully." />);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      toast(<NotificationError text="Failed to assign supplier." />);
-    }
-  };
 
-  // pay supplier
-  const paySupplierFunc = async (orderId) => {
-    try {
-      setLoading(true);
-      await paySupplier({ orderId }).then((resp) => {
-        console.log("resp", resp);
-        fetchCompletedOrders();
-        toast(<NotificationSuccess text="Supplier paid successfully." />);
-      });
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      toast(<NotificationError text="Failed to pay supplier." />);
-    }
-  };
 
-  // mark order as delivered
-  const markDelivered = async (data) => {
-    try {
-      setLoading(true);
-      await markOrderAsCompleted(data);
-      toast(<NotificationSuccess text="Order marked as delivered." />);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      toast(<NotificationError text="Failed to mark order as delivered." />);
-    }
-  };
 
   const fetchApprovedAdverts = useCallback(async () => {
     try {
       setLoading(true);
       setApprovedAdverts(await getFarmerSalesAdvertsApprovedForFarmer(id));
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  });
+
+  const fetchSuccesfulAdverts = useCallback(async () => {
+    try {
+      setLoading(true);
+      setSuccesfulAdverts(await getFarmerSalesAdvertsCompletedForFarmer(id));
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -191,7 +156,7 @@ export default function CompanyOverviewPage({ farmer }) {
     fetchGradedProducts();
     fetchNewProducts();
     fetchApprovedAdverts();
-    // fetchOrders();
+    fetchSuccesfulAdverts();
   }, []);
 
   console.log("new", newProducts);
@@ -218,46 +183,47 @@ export default function CompanyOverviewPage({ farmer }) {
                 <div className="flex flex-row justify-between items-center w-full">
                   <div className="flex flex-row justify-end items-center w-full gap-[21px]">
                     <AddProduct save={saveProduct} />
-                    <Button
-                      color="blue_gray_900_02"
-                      size="12xl"
-                      className="min-w-[115px] rounded-[28px]"
-                    >
-                      Update Profile
-                    </Button>
-                    <Wallet />
+                   
+                    <Wallet setBalanceInfo={setBalanceInfo} />
                   </div>
                 </div>
-                <Text size="12xl" as="p" className="mt-6 ml-[3px]">
-                  Company {farmer.fullName} Overview
-                </Text>
+              
                 <div className="flex flex-row justify-start items-start w-full mt-[45px] gap-[29px]">
                   <div className="flex flex-col items-center justify-start w-[66%] gap-7">
                     <div className="flex flex-row justify-start w-full p-[29px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
-                      <div className="flex flex-col items-start justify-start w-[50%] mt-2.5 mb-[22px]">
+                      <div className="flex flex-col items-start justify-start w-[100%] mt-2.5 mb-[22px]">
                         <Text size="4xl" as="p">
                           Overview
                         </Text>
-                        <Text as="p" className="mt-[31px] ml-[92px]">
-                          Total Revenue
-                        </Text>
-                        <div className="flex flex-row justify-between w-[96%] ml-[15px]">
-                          <Img
-                            src={Images.img_credit_card_1}
-                            alt="creditcardone"
-                            className="h-[40px] w-[40px] mb-px"
-                          />
-                          <Text size="12xl" as="p">
-                            $9,876.33
-                          </Text>
+                        <div className="max-w-lg mx-auto p-3 bg-gray-200 shadow-md rounded-lg w-full">
+                          <div className="grid grid-cols-2 gap-1">
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Full Name</p>
+                              <p className="text-gray-600">{farmer.fullName}</p>
+                            </div>
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Contact Info</p>
+                              <p className="text-gray-600">{farmer.contactInfo}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Company Name</p>
+                              <p className="text-gray-600">{farmer.companyName}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Company Reg No</p>
+                              <p className="text-gray-600">{farmer.companyRegNo}</p>
+                            </div>
+                          </div>
                         </div>
+
+                       
                       </div>
                     </div>
                     <div className="flex flex-row justify-end w-full p-[13px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-center justify-start w-[97%] mt-4 mr-1 gap-8">
                         <div className="flex flex-row justify-between items-center w-full">
                           <Text size="3xl" as="p">
-                            Completed Jobs
+                            Completed Sales
                           </Text>
                           <SelectBox
                             size="xs"
@@ -298,34 +264,22 @@ export default function CompanyOverviewPage({ farmer }) {
                                 alt="graph_one"
                                 className="h-[241px]"
                               />
-                              <div className="flex flex-row justify-between items-center w-[98%]">
-                                <Text size="2xl" as="p">
-                                  July
-                                </Text>
-                                <div className="flex flex-row justify-between w-auto">
-                                  <Text as="p" className="mt-[3px]">
-                                    August
-                                  </Text>
-                                  <Text as="p">Septemb</Text>
-                                  <Text as="p">October</Text>
-                                  <Text as="p">Novembe</Text>
-                                  <Text as="p">Decembe</Text>
-                                </div>
-                              </div>
+                             
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <Tabs
-                      className="flex flex-col items-start justify-end w-full p-[21px] bg-blue_gray-900_0c shadow-xs rounded-[19px]"
+                      className="flex flex-col items-start justify-end w-full   p-[21px] bg-blue_gray-900_0c shadow-xs rounded-[19px]"
                       selectedTabClassName="!text-gray-900_01 bg-blue_gray-900_0c shadow-xs rounded-[20px]"
                       selectedTabPanelClassName="mt-[20px] mb-[7px] ml-[7px] relative tab-panel--selected"
                     >
                       <Text size="6xl" as="p" className="mt-4 ml-[9px]">
-                        Jobs
+                        Products
                       </Text>
-                      <div className="flex flex-col items-start justify-between w-full mt-4 gap-[29px] ">
+                      {/* div below to tamper width */}
+                      <div className="flex flex-col items-start justify-between w-[100%] mt-4 gap-[29px] ">
                         <TabList className="flex flex-row justify-between mt-2 w-[98%] items-center p-3 bg-white-A700_01 shadow-xs rounded-[25px]">
                           <Tab className="mt-0.5 ml-[13px] text-gray-900_01 text-[11px] font-normal">
                             <Button
@@ -368,265 +322,204 @@ export default function CompanyOverviewPage({ farmer }) {
                               Awaited Pickup
                             </Button>
                           </Tab>
+                          <Tab className="mt-0.5 ml-[13px] text-gray-900_01 text-[11px] font-normal">
+                            <Button
+                              color="blue_gray_900_0c"
+                              size="6xl"
+                              className="ml-px rounded-[20px]"
+                              onClick={() => setTab("succesful")}
+                            >
+                              Successful
+                            </Button>
+                          </Tab>
 
                         </TabList>
                       </div>
-                      {[...Array(5)].map((_, index) => (
+                      {[...Array(6)].map((_, index) => (
                         <TabPanel
                           key={`tab-panel${index}`}
                           className="w-[99%] absolute"
                         >
-                          <div className="flex flex-col items-center justify-start w-[99%] mb-[7px] ml-[7px]">
+                          <div className="flex flex-col items-center justify-start w-[99%] mb-[7px] ">
                             <div className="flex flex-col items-center justify-start w-full gap-[17px]">
                               <div className="flex flex-col w-full pb-[18px] gap-[17px]">
                                 <div className="h-[3px] w-[98%] bg-gray-400_02" />
                                 {tab === "new" ? (
                                   <>
-                                    {newProducts.map((product, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={product.image}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.name}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.description}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.category}
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                                {product.status}
-                                              </Text>
-                                              <ProductGrading
-                                                product={product}
-                                                save={addGrading}
+                                    <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                      <thead>
+                                        <tr>
+                                          <th className="px-4 py-2">Image</th>
+                                          <th className="px-4 py-2">Name</th>
+                                          <th className="px-4 py-2">Description</th>
+                                          <th className="px-4 py-2">Category</th>
+                                          <th className="px-4 py-2">Status</th>
+                                          <th className="px-4 py-2">Grading</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {newProducts.map((product, index) => (
+                                          <tr key={index} className="bg-white border-t">
+                                            <td className="px-4 py-2">
+                                              <Img
+                                                src={product.image}
+                                                alt="product image"
+                                                className="w-[86px] object-cover rounded-[12px]"
                                               />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
+                                            </td>
+                                            <td className="px-4 py-2">{product.name}</td>
+                                            <td className="px-4 py-2">{product.description}</td>
+                                            <td className="px-4 py-2">{product.category}</td>
+                                            <td className="px-4 py-2">{product.status}</td>
+                                            <td className="px-4 py-2">
+                                              <ProductGrading product={product} save={addGrading} />
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
                                   </>
                                 ) : tab === "Graded" ? (
                                   <>
-                                    {gradedProducts.map((product, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={product.image}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.name}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.description}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.category}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.status}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {(product.price/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                                {product.grade}
-                                              </Text>
-                                              <Text size="2xl" as="p">
-                                                {product.quantity.toString()} KG
-                                              </Text>
-                                              <ProductPackaging product={product} />
+                                    <div className="overflow-x-auto w-full">
 
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
+                                    <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                      <thead>
+                                        <tr>
+                                          <th className="px-4 py-2">Image</th>
+                                          <th className="px-4 py-2">Name</th>
+                                          <th className="px-4 py-2">Description</th>
+                                          <th className="px-4 py-2">Category</th>
+                                          <th className="px-4 py-2">Status</th>
+                                          <th className="px-4 py-2">Price (ICP)</th>
+                                          <th className="px-4 py-2">Grade</th>
+                                          <th className="px-4 py-2">Quantity (KG)</th>
+                                          <th className="px-4 py-2">Packaging</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {gradedProducts.map((product, index) => (
+                                          <tr key={index} className="bg-white border-t">
+                                            <td className="px-4 py-2">
+                                              <Img
+                                                src={product.image}
+                                                alt="product image"
+                                                className="w-[86px] object-cover rounded-[12px]"
+                                              />
+                                            </td>
+                                            <td className="px-4 py-2">{product.name}</td>
+                                            <td className="px-4 py-2">{product.description}</td>
+                                            <td className="px-4 py-2">{product.category}</td>
+                                            <td className="px-4 py-2">{product.status}</td>
+                                            <td className="px-4 py-2">{(product.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                            <td className="px-4 py-2">{product.grade}</td>
+                                            <td className="px-4 py-2">{product.quantity.toString()} KG</td>
+                                            <td className="px-4 py-2">
+                                              <ProductPackaging product={product} />
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                    </div>
                                   </>
                                 ) : tab === "Packaged" ? (
                                   <>
-                                    {packagedProducts.map((product, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={product.image}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.name}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.description}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.category}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.status}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {product.grade}
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                                {product.quantity.toString()} KG
-                                              </Text>
-                                              <Text size="2xl" as="p">
-                                              {(product.price/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                              <SaleAdvert product={product} farmerId={id} />
-                                              {/* <PaySupplier
-                                                order={product}
-                                                save={paySupplierFunc}
-                                                markDelivered={markDelivered}
-                                              /> */}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
+                                   <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Image</th>
+                                            <th className="px-4 py-2">Name</th>
+                                            <th className="px-4 py-2">Description</th>
+                                            <th className="px-4 py-2">Category</th>
+                                            <th className="px-4 py-2">Status</th>
+                                            <th className="px-4 py-2">Grade</th>
+                                            <th className="px-4 py-2">Quantity (KG)</th>
+                                            <th className="px-4 py-2">Price (ICP)</th>
+                                            <th className="px-4 py-2">Sale Advert</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {packagedProducts.map((product, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">
+                                                <Img
+                                                  src={product.image}
+                                                  alt="product image"
+                                                  className="w-[86px] object-cover rounded-[12px]"
+                                                />
+                                              </td>
+                                              <td className="px-4 py-2">{product.name}</td>
+                                              <td className="px-4 py-2">{product.description}</td>
+                                              <td className="px-4 py-2">{product.category}</td>
+                                              <td className="px-4 py-2">{product.status}</td>
+                                              <td className="px-4 py-2">{product.grade}</td>
+                                              <td className="px-4 py-2">{product.quantity.toString()} KG</td>
+                                              <td className="px-4 py-2">{(product.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">
+                                                <SaleAdvert product={product} farmerId={id} />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
                                   </>
                                 ):tab === "ApprovedAdverts" ? (
                                   <>
-                                    {approvedAdverts.map((saleAdvert, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.productId}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.quantity.toString()}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                 {(saleAdvert.price/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                               {saleAdvert.status}
-                                              </Text>
-                                            
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                              Farmer Paid {saleAdvert.farmerPaid.toString()}
-                                              </Text>
-                                              
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
+                                    <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Product ID</th>
+                                            <th className="px-4 py-2">Quantity</th>
+                                            <th className="px-4 py-2">Price (ICP)</th>
+                                            <th className="px-4 py-2">Status</th>
+                                            <th className="px-4 py-2">Farmer Paid</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {approvedAdverts.map((saleAdvert, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                              <td className="px-4 py-2">{saleAdvert.quantity.toString()} Kg</td>
+                                              <td className="px-4 py-2">{(saleAdvert.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">{saleAdvert.status}</td>
+                                              <td className="px-4 py-2">{saleAdvert.farmerPaid.toString()}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
                                   </>
                                 ):(
-                                  <div>
-                                    No data
-                                  </div>
+                                  <>
+                                    <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Product ID</th>
+                                            <th className="px-4 py-2">Quantity</th>
+                                            <th className="px-4 py-2">Price (ICP)</th>
+                                            <th className="px-4 py-2">Status</th>
+                                            <th className="px-4 py-2">Farmer Paid</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {succesfulAdverts.map((saleAdvert, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                              <td className="px-4 py-2">{saleAdvert.quantity.toString()} Kg</td>
+                                              <td className="px-4 py-2">{(saleAdvert.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">{saleAdvert.status}</td>
+                                              <td className="px-4 py-2">{saleAdvert.farmerPaid.toString()}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </>
                                 )}
                               </div>
                             </div>
@@ -704,7 +597,7 @@ export default function CompanyOverviewPage({ farmer }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 ICP
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-1.5 p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -715,10 +608,10 @@ export default function CompanyOverviewPage({ farmer }) {
                         />
                         <div className="flex flex-col items-center justify-start w-[67%] mb-2.5 gap-2">
                           <Text size="lg" as="p" className="text-center">
-                            Total Expenses
+                          Wallet Balance
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                             {balanceInfo} {symbol}
                           </Text>
                         </div>
                       </div>
@@ -736,7 +629,7 @@ export default function CompanyOverviewPage({ farmer }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 ICP
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-[5px] p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -750,7 +643,7 @@ export default function CompanyOverviewPage({ farmer }) {
                             Total Revenue
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                            20,850 ICP
                           </Text>
                         </div>
                       </div>
@@ -800,86 +693,8 @@ export default function CompanyOverviewPage({ farmer }) {
                               </div>
                             </div>
                           </div>
-                          <div className="flex flex-row justify-center w-full">
-                            <div className="flex flex-row justify-start items-start w-full gap-1.5">
-                              <Img
-                                src={Images.img_image_194}
-                                alt="image200_one"
-                                className="h-[52px] w-[52px] rounded-[50%]"
-                              />
-                              <div className="flex flex-col items-start justify-start w-[80%] gap-[15px]">
-                                <div className="flex flex-col items-start justify-start w-[98%] ml-[5px]">
-                                  <div className="flex flex-row justify-between items-center w-full">
-                                    <Text size="2xl" as="p">
-                                      Jane Smith
-                                    </Text>
-                                    <Img
-                                      src={Images.img_image_211}
-                                      alt="image211_one"
-                                      className="w-[10%] object-cover rounded-[10px]"
-                                    />
-                                  </div>
-                                  <Text as="p" className="mt-1">
-                                    on Product - SKU456
-                                  </Text>
-                                  <Text as="p" className="mt-5">
-                                    Very useful, exceeded my
-                                  </Text>
-                                </div>
-                                <div className="flex flex-row justify-between w-[66%]">
-                                  <Img
-                                    src={Images.img_chat_circle_dots}
-                                    alt="image"
-                                    className="h-[24px] w-[24px] opacity-0.78"
-                                  />
-                                  <Img
-                                    src={Images.img_thumbs_up_1}
-                                    alt="thumbsupone_one"
-                                    className="h-[24px] w-[24px] opacity-0.78"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex flex-row justify-start items-start w-full gap-1.5">
-                            <Img
-                              src={Images.img_image_194}
-                              alt="image183_one"
-                              className="h-[52px] w-[52px] rounded-[50%]"
-                            />
-                            <div className="flex flex-col items-start justify-start w-[80%] gap-[17px]">
-                              <div className="flex flex-col items-start justify-start w-[97%] ml-[7px]">
-                                <div className="flex flex-row justify-between items-center w-full">
-                                  <Text size="2xl" as="p">
-                                    David Johnson
-                                  </Text>
-                                  <Img
-                                    src={Images.img_image_205}
-                                    alt="image205_one"
-                                    className="w-[9%] object-cover rounded-[9px]"
-                                  />
-                                </div>
-                                <Text as="p" className="mt-1.5">
-                                  on Product - SKU789
-                                </Text>
-                                <Text as="p" className="mt-5">
-                                  Best product I&#39;ve ever
-                                </Text>
-                              </div>
-                              <div className="flex flex-row justify-between w-[66%]">
-                                <Img
-                                  src={Images.img_chat_circle_dots}
-                                  alt="image"
-                                  className="h-[24px] w-[24px] opacity-0.78"
-                                />
-                                <Img
-                                  src={Images.img_thumbs_up_1}
-                                  alt="thumbsupone_one"
-                                  className="h-[24px] w-[24px] opacity-0.78"
-                                />
-                              </div>
-                            </div>
-                          </div>
+                          
+                          
                         </div>
                         <a
                           href="#"

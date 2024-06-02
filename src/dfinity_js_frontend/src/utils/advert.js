@@ -143,6 +143,19 @@ export async function getPaidAdverts(processorCompanyId) {
     }
 }
 
+// getFarmerSalesAdvertsCompletedForFarmer
+export async function getFarmerSalesAdvertsCompletedForFarmer(farmerId) {
+    try {
+      return await window.canister.agroChain.getFarmerSalesAdvertsCompletedForFarmer(farmerId);
+    } catch (err) {
+      if (err.name === "AgentHTTPResponseError") {
+        const authClient = window.auth.client;
+        await authClient.logout();
+      }
+      return [];
+    }
+}
+
 // markFarmerSalesAdvertAsFarmerPaid
 export async function markFarmerSalesAdvertAsFarmerPaid(id) {
     try {

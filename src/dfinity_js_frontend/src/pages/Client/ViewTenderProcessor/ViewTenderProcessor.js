@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Modal, } from "react-bootstrap";
+import { Button as BButton, Modal, } from "react-bootstrap";
+import { Button } from "../../../components/utils";
 import { getTenderForDeliveryDetailsForProcessingCompany } from "../../../utils/tender";
 import { toast } from "react-toastify";
 import { NotificationError, NotificationSuccess } from "../../../components/utils/Notifications";
@@ -54,7 +55,6 @@ const ViewTenderProcessor = ({deliveryDetailId, companyId}) => {
     }
   };
 
-//   console.log("Tender", tender )
   return (
     <>
       {

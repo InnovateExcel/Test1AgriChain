@@ -6,7 +6,7 @@ import { Img, Text, Button, Header } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 import { createFarmer } from "../../../utils/farmer";
 
-export default function ActivateClientAccount({ fetchFarmer }) {
+export default function ActivateFarmerAccount({ fetchFarmer }) {
   // usestate for the form fields
 
   const [fullName, setFullName] = useState("");

@@ -63,51 +63,50 @@ const DeliveryTender = ({deliveryDetail}) => {
             <Loader />
         ) : (
             <>
-            <BButton
+            <Button
                 color="blue_gray_900_02"
                 size="12xl"
                 className="min-w-[115px] rounded-[28px]"
-                variant="primary"
                 onClick={handleShow}
             >
                 Add Tender
-            </BButton>
+            </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                 <Modal.Title>Add Tender</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Form>
-                    <FloatingLabel controlId="floatingInput" label="Tender Title">
+                <Form className="max-w-lg mx-auto p-2 bg-white shadow-md rounded-lg">
+                    <FloatingLabel controlId="floatingInput" label="Tender Title" className="mb-3">
                     <Form.Control
                         type="text"
                         placeholder="Tender Title"
                         onChange={(e) => setTenderTitle(e.target.value)}
                     />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Tender Description">
+                    <FloatingLabel controlId="floatingInput" label="Tender Description"className="mb-3">
                     <Form.Control
                         type="text"
                         placeholder="Tender Description"
                         onChange={(e) => setTenderDescription(e.target.value)}
                     />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Delivery Weight">
+                    <FloatingLabel controlId="floatingInput" label="Delivery Weight"className="mb-3">
                     <Form.Control
                         type="number"
                         placeholder="Delivery Weight"
                         onChange={(e) => setDeliveryWeight(e.target.value)}
                     />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Cost Per Weight">
+                    <FloatingLabel controlId="floatingInput" label="Cost Per Weight"className="mb-3">
                     <Form.Control
                         type="number"
                         placeholder="Cost Per Weight"
                         onChange={(e) => setCostPerWeight(e.target.value)}
                     />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Additional Cost">
+                    <FloatingLabel controlId="floatingInput" label="Additional Cost"className="mb-3">
                     <Form.Control
                         type="number"
                         placeholder="Additional Cost"
@@ -120,7 +119,10 @@ const DeliveryTender = ({deliveryDetail}) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={
+                <Button
+                color="blue_gray_900_02"
+                className="min-w-[115px] rounded-[28px]"
+                onClick={
                     () => {
                         handleSubmit();
                         handleClose();

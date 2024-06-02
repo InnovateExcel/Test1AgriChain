@@ -68,15 +68,14 @@ function SaleAdvert({ product, farmerId }) {
           <Loader />
         ) : (
           <>
-            <BButton
+            <Button
               color="blue_gray_900_02"
-              size="12xl"
               className="min-w-[115px] rounded-[28px]"
-              variant="primary"
+              size="12xl"
               onClick={handleShow}
             >
               Outreach 
-            </BButton>
+            </Button>
   
             <Modal size="lg"
             className="w-[50%]" centered show={show} onHide={handleClose}>
@@ -116,7 +115,8 @@ function SaleAdvert({ product, farmerId }) {
                 Close
                 </Button>
                 <Button
-                variant="primary"
+                color="blue_gray_900_02"
+                className="min-w-[115px] rounded-[28px]"
                 onClick={() => {
                     handleSubmit();
                     handleClose();

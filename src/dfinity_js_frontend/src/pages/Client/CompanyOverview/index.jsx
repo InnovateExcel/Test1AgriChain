@@ -13,27 +13,17 @@ import {
 } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 import Wallet from "../../../components/Wallet";
-import {
-  getClientCompanyActiveOrders,
-  getClientCompanyCompletedOrders,
-  paySupplier,
-} from "../../../utils/processorCompany";
 import { toast } from "react-toastify";
 import {
-  assignSupplier,
-  createOrderDetails,
   getCompletedDeliveryDetailsForProcessingCompany,
-  markOrderAsCompleted,
 } from "../../../utils/deliveries";
-import AddOrder from "../../order/AddOrder";
-import ViewBids from "../Bids";
-import PaySupplier from "../components/PaySupplier";
 import { getFarmerSalesAdvertsApprovedByProcessorCompany, getFarmerSalesAdvertsOfProcessorCompany, getPaidAdverts, markFarmerSalesAdvertAsApproved } from "../../../utils/advert";
 import { getProduct } from "../../../utils/product";
 import PayFarmer from "../components/PayFarmer";
 import AddDeliveryDetails from "../DeliveryDetails/AddDeliveryDetails";
 import { acceptDeliveryTender, getDeliveryTendersOfProcessingCompany } from "../../../utils/tender";
 import ViewTenderProcessor from "../ViewTenderProcessor/ViewTenderProcessor";
+
 
 const dropDownOptions = [
   { label: "Option1", value: "option1" },
@@ -46,15 +36,18 @@ export default function CompanyOverviewPage({ processorCompany }) {
   const sliderRef = React.useRef(null);
   const [searchBarValue32, setSearchBarValue32] = useState("");
   const [loading, setLoading] = useState(false);
-  const [completedOrders, setCompletedOrders] = useState([]);
-  const [currentOrders, setCurrentOrders] = useState([]);
   const [newSalesAdverts, setNewSalesAdverts] = useState([]);
   const [approvedAdverts, setApprovedAdverts] = useState([]);
   const [paidAdverts, setPaidAdverts] = useState([]);
   const [pickedProducts, setPickedProducts] = useState([]);
   const [deliveryTenders, setDeliveryTenders] = useState([]);
   const [completeDeliveries, setCompleteDeliveries] = useState([]);
+  const [balanceInfo, setBalanceInfo] = useState("0");
+
   const [tab, setTab] = useState("new");
+
+  const symbol = "ICP"
+
 
   const { id } = processorCompany;
 
@@ -209,21 +202,16 @@ export default function CompanyOverviewPage({ processorCompany }) {
             <div className="mx-auto flex flex-col items-center justify-start w-[85%]">
               <div className="flex flex-col items-start justify-start w-full mt-[2rem]">
                 <div className="flex flex-row justify-between items-center w-full">
+                    <Img
+                      src={processorCompany.logo}
+                      alt="Logo"
+                      className="h-[60px] w-[60px] rounded-[50%]"
+                    />
                   <div className="flex flex-row justify-end items-center w-full gap-[21px]">
-                    {/* <AddOrder save={saveOrder} /> */}
-                    <Button
-                      color="blue_gray_900_02"
-                      size="12xl"
-                      className="min-w-[115px] rounded-[28px]"
-                    >
-                      Update Profile
-                    </Button>
-                    <Wallet />
+                    <Wallet setBalanceInfo={setBalanceInfo} />
                   </div>
                 </div>
-                <Text size="12xl" as="p" className="mt-6 ml-[3px]">
-                  Company {processorCompany.name} Overview
-                </Text>
+     
                 <div className="flex flex-row justify-start items-start w-full mt-[45px] gap-[29px]">
                   <div className="flex flex-col items-center justify-start w-[66%] gap-7">
                     <div className="flex flex-row justify-start w-full p-[29px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -231,26 +219,35 @@ export default function CompanyOverviewPage({ processorCompany }) {
                         <Text size="4xl" as="p">
                           Overview
                         </Text>
-                        <Text as="p" className="mt-[31px] ml-[92px]">
-                          Total Revenue
-                        </Text>
-                        <div className="flex flex-row justify-between w-[96%] ml-[15px]">
-                          <Img
-                            src={Images.img_credit_card_1}
-                            alt="creditcardone"
-                            className="h-[40px] w-[40px] mb-px"
-                          />
-                          <Text size="12xl" as="p">
-                            $9,876.33
-                          </Text>
+                        <div className="max-w-lg mx-auto p-3 bg-gray-200 shadow-md rounded-lg w-full">
+                          <div className="grid grid-cols-2 gap-1">
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Company Namee</p>
+                              <p className="text-gray-600">{processorCompany.name}</p>
+                            </div>
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Contact Email</p>
+                              <p className="text-gray-600">{processorCompany.email}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Business Type</p>
+                              <p className="text-gray-600">{processorCompany.bussinessType}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Years in Operation</p>
+                              <p className="text-gray-600">{processorCompany.YearsInOperation}</p>
+                            </div>
+                          </div>
                         </div>
+                         
+                       
                       </div>
                     </div>
                     <div className="flex flex-row justify-end w-full p-[13px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-center justify-start w-[97%] mt-4 mr-1 gap-8">
                         <div className="flex flex-row justify-between items-center w-full">
                           <Text size="3xl" as="p">
-                            Completed Jobs
+                            Completed Deliveries
                           </Text>
                           <SelectBox
                             size="xs"
@@ -291,20 +288,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                                 alt="graph_one"
                                 className="h-[241px]"
                               />
-                              <div className="flex flex-row justify-between items-center w-[98%]">
-                                <Text size="2xl" as="p">
-                                  July
-                                </Text>
-                                <div className="flex flex-row justify-between w-auto">
-                                  <Text as="p" className="mt-[3px]">
-                                    August
-                                  </Text>
-                                  <Text as="p">Septemb</Text>
-                                  <Text as="p">October</Text>
-                                  <Text as="p">Novembe</Text>
-                                  <Text as="p">Decembe</Text>
-                                </div>
-                              </div>
+                          
                             </div>
                           </div>
                         </div>
@@ -315,9 +299,9 @@ export default function CompanyOverviewPage({ processorCompany }) {
                       selectedTabClassName="!text-gray-900_01 bg-blue_gray-900_0c shadow-xs rounded-[20px]"
                       selectedTabPanelClassName="mt-[20px] mb-[7px] ml-[7px] relative tab-panel--selected"
                     >
-                      <Text size="6xl" as="p" className="mt-4 ml-[9px]">
-                        Jobs
-                      </Text>
+                      {/* <Text size="6xl" as="p" className="mt-4 ml-[9px]">
+                        Products
+                      </Text> */}
                       <div className="flex flex-col items-start justify-between w-full mt-4 gap-[29px] ">
                         <TabList className="flex flex-row justify-between mt-2 w-[98%] items-center p-3 bg-white-A700_01 shadow-xs rounded-[25px]">
                           <Tab className="mt-0.5 ml-[13px] text-gray-900_01 text-[11px] font-normal">
@@ -327,7 +311,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                               className="ml-px rounded-[20px]"
                               onClick={() => setTab("new")}
                             >
-                              New Adverts
+                              New Outreach
                             </Button>
                           </Tab>
                           <Tab className="mt-0.5 ml-[13px] text-gray-900_01 text-[11px] font-normal">
@@ -347,7 +331,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                               className="ml-px rounded-[20px]"
                               onClick={() => setTab("Tenders")}
                             >
-                              Approved Adverts
+                              Delivery Tenders
                             </Button>
                           </Tab>
                           <Tab className="mt-0.5 ml-[13px] text-gray-900_01 text-[11px] font-normal">
@@ -401,382 +385,212 @@ export default function CompanyOverviewPage({ processorCompany }) {
                                 <div className="h-[3px] w-[98%] bg-gray-400_02" />
                                 {tab === "new" ? (
                                   <>
-                                    {newSalesAdverts.map((saleAdvert, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.productId}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.quantity.toString()}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {(saleAdvert.price/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.status}
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                              Farmer Paid {saleAdvert.farmerPaid.toString()}
-                                              </Text>
-                                              <Button
-                                                size="6xl"
-                                                className="ml-[50px] gap-3 !text-blue_gray-900_02 border-gray-600_01 border border-solid min-w-[180px] rounded-[19px]"
-                                                onClick={() => {
-                                                  handleAccept(saleAdvert.id)
-                                                }}
-                                              >
-                                                Accept
-                                              </Button>
-                                              {/* <ViewBids
-                                                order={order}
-                                                save={assignSupplierBid}
-                                              /> */}
-                                            </div>
-                                          </div>
-                                        </div>
+                                    <div className="overflow-x-auto w-full">
+                                        <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                          <thead>
+                                            <tr>
+                                              <th className="px-4 py-2">Product ID</th>
+                                              <th className="px-4 py-2">Quantity</th>
+                                              <th className="px-4 py-2">Price (ICP)</th>
+                                              <th className="px-4 py-2">Status</th>
+                                              <th className="px-4 py-2">Farmer Paid</th>
+                                              <th className="px-4 py-2">Action</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {newSalesAdverts.map((saleAdvert, index) => (
+                                              <tr key={index} className="bg-white border-t">
+                                                <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                                <td className="px-4 py-2">{saleAdvert.quantity.toString()} Kg</td>
+                                                <td className="px-4 py-2">{(saleAdvert.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                                <td className="px-4 py-2">{saleAdvert.status}</td>
+                                                <td className="px-4 py-2">{saleAdvert.farmerPaid.toString()}</td>
+                                                <td className="px-4 py-2">
+                                                  <Button
+                                                    color="blue_gray_900_02"
+                                                    className="min-w-[115px] rounded-[28px]"
+                                                    size="6xl"
+                                                    onClick={() => handleAccept(saleAdvert.id)}
+                                                  >
+                                                    Accept
+                                                  </Button>
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
                                       </div>
-                                    ))}
                                   </>
-                                ): tab === "Tenders" ? (
-                                  <>
-                                    {deliveryTenders.map((deliveryTender, index) => (
-                                        <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryTender.tenderTitle}
-                                              </Text>
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryTender.tenderDescription}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryTender.deliveryWeight.toString()}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                Cost/KG:{(deliveryTender.costPerWeight/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                Added Cost{(deliveryTender.additionalCost/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-
-                                              <Button
-                                                size="6xl"
-                                                className="ml-[50px] gap-3 !text-blue_gray-900_02 border-gray-600_01 border border-solid min-w-[180px] rounded-[19px]"
-                                                onClick={() => {
-                                                  handleAcceptTender(deliveryTender.id)
-                                                }}
-                                              >
-                                                Accept
-                                              </Button>
-                                                  
-                                              
-                                              {/* <AssignDrivers
-                                                order={deliveryDetail}
-                                                save={saveDriver}
-                                              /> */}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </>
-
                                 ) : tab === "Approved" ? (
                                   <>
-                                    {approvedAdverts.map((saleAdvert, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.productId}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.quantity.toString()}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                 {(saleAdvert.price/ BigInt(10**8)).toString()} ICP
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                               {saleAdvert.status}
-                                              </Text>
-                                            
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                              Farmer Paid {saleAdvert.farmerPaid.toString()}
-                                              </Text>
+                                    <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Product ID</th>
+                                            <th className="px-4 py-2">Quantity</th>
+                                            <th className="px-4 py-2">Price (ICP)</th>
+                                            <th className="px-4 py-2">Status</th>
+                                            <th className="px-4 py-2">Farmer Paid</th>
+                                            <th className="px-4 py-2">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {approvedAdverts.map((saleAdvert, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                              <td className="px-4 py-2">{saleAdvert.quantity.toString()}</td>
+                                              <td className="px-4 py-2">{(saleAdvert.price / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">{saleAdvert.status}</td>
+                                              <td className="px-4 py-2">{saleAdvert.farmerPaid.toString()}</td>
+                                              <td className="px-4 py-2">
+                                                <AddDeliveryDetails saleAdvert={saleAdvert} />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
 
-                                              <AddDeliveryDetails 
-                                               
-                                                saleAdvert={saleAdvert}
-                                              />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
                                   </>
-                                ) :tab === "Picked" ? (
+                                ) : tab === "Tenders" ? (
                                   <>
-                                    {pickedProducts.map((saleAdvert, index) => (
-                                      <div
-                                        key={saleAdvert.id}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.productId}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {saleAdvert.quantity.toString()}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                 {((saleAdvert.price/ BigInt(10**8)) * saleAdvert.quantity).toString()} ICP
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                               {saleAdvert.status}
-                                              </Text>
-                                            
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              <Text size="2xl" as="p">
-                                                Farmer Paid {saleAdvert.farmerPaid.toString()}
-                                                </Text>
-                                              <PayFarmer
-                                                saleAdvert={saleAdvert}
-                                                fetchPaidAdverts={fetchPaidAdverts}
-                                              />
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
+                                    <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Tender Title</th>
+                                            <th className="px-4 py-2">Tender Description</th>
+                                            <th className="px-4 py-2">Delivery Weight</th>
+                                            <th className="px-4 py-2">Cost/KG (ICP)</th>
+                                            <th className="px-4 py-2">Additional Cost (ICP)</th>
+                                            <th className="px-4 py-2">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {deliveryTenders.map((deliveryTender, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{deliveryTender.tenderTitle}</td>
+                                              <td className="px-4 py-2">{deliveryTender.tenderDescription}</td>
+                                              <td className="px-4 py-2">{deliveryTender.deliveryWeight.toString()} Kg</td>
+                                              <td className="px-4 py-2">{(deliveryTender.costPerWeight / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">{(deliveryTender.additionalCost / BigInt(10 ** 8)).toString()} ICP</td>
+                                              <td className="px-4 py-2">
+                                                <Button
+                                                  size="6xl"
+                                                  color="blue_gray_900_02"
+                                                  className="min-w-[115px] rounded-[28px]"
+                                                  onClick={() => handleAcceptTender(deliveryTender.id)}
+                                                >
+                                                  Accept
+                                                </Button>
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
+                                  </>
+
+                                ):tab === "Picked" ? (
+                                  <>
+                                   <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Product ID</th>
+                                            <th className="px-4 py-2">Quantity</th>
+                                            <th className="px-4 py-2">Total Price (ICP)</th>
+                                            <th className="px-4 py-2">Status</th>
+                                            <th className="px-4 py-2">Farmer Paid</th>
+                                            <th className="px-4 py-2">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {pickedProducts.map((saleAdvert, index) => (
+                                            <tr key={saleAdvert.id} className="bg-white border-t">
+                                              <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                              <td className="px-4 py-2">{saleAdvert.quantity.toString()} Kg</td>
+                                              <td className="px-4 py-2">
+                                                {((saleAdvert.price / BigInt(10 ** 8)) * saleAdvert.quantity).toString()} ICP
+                                              </td>
+                                              <td className="px-4 py-2">{saleAdvert.status}</td>
+                                              <td className="px-4 py-2">{saleAdvert.farmerPaid.toString()}</td>
+                                              <td className="px-4 py-2">
+                                                <PayFarmer saleAdvert={saleAdvert} fetchPaidAdverts={fetchPaidAdverts} />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
                                   </>
                                 ):tab === "Completed" ?(
                                   <>
-                                  {paidAdverts.map((saleAdvert, index) => (
-                                    <div
-                                      key={saleAdvert.id}
-                                      className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                    >
-                                      <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                        <Img
-                                          src={Images.img_image_389}
-                                          alt="image389_one"
-                                          className="w-[86px] object-cover rounded-[12px]"
-                                        />
-                                        <div className="flex flex-col w-[84%]">
-                                          <div className="flex flex-row justify-between items-center">
-                                            <Text
-                                              size="3xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {saleAdvert.productId}
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {saleAdvert.quantity.toString()}
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                                 {((saleAdvert.price/ BigInt(10**8)) * saleAdvert.quantity).toString()} ICP
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                             {saleAdvert.status}
-                                            </Text>
-                                          
-                                          </div>
-                                          <div className="mt-2 flex justify-between items-center">
-                                            <Text size="2xl" as="p">
-                                              Farmer Paid {saleAdvert.farmerPaid.toString()}
-                                              </Text>
-                                            
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
+                                <div className="overflow-x-auto w-full">
+                                  <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                    <thead>
+                                      <tr>
+                                        <th className="px-4 py-2">Product ID</th>
+                                        <th className="px-4 py-2">Quantity</th>
+                                        <th className="px-4 py-2">Total Price (ICP)</th>
+                                        <th className="px-4 py-2">Status</th>
+                                        <th className="px-4 py-2">Farmer Paid</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {paidAdverts.map((saleAdvert, index) => (
+                                        <tr key={saleAdvert.id} className="bg-white border-t">
+                                          <td className="px-4 py-2">{saleAdvert.productId}</td>
+                                          <td className="px-4 py-2">{saleAdvert.quantity.toString()}</td>
+                                          <td className="px-4 py-2">
+                                            {((saleAdvert.price / BigInt(10 ** 8)) * saleAdvert.quantity).toString()} ICP
+                                          </td>
+                                          <td className="px-4 py-2">{saleAdvert.status}</td>
+                                          <td className="px-4 py-2"> {saleAdvert.farmerPaid.toString()}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+
                                 </>
                                 ):tab === "completedDel" ? (
                                   <>
-                                  {completeDeliveries.map((deliveryDetail, index) => (
-                                   <div
-                                     key={index}
-                                     className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                   >
-                                     <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                       <Img
-                                         src={Images.img_image_389}
-                                         alt="image389_one"
-                                         className="w-[86px] object-cover rounded-[12px]"
-                                       />
-                                       <div className="flex flex-col w-[84%]">
-                                         <div className="flex flex-row justify-between items-center">
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupDate}
-                                           </Text>
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveredRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             Priority:{deliveryDetail.deliveryPriority}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveryDescription}
-                                           </Text>
-                                         </div>
-                                         <div className="mt-2 flex justify-between items-center">
-                                          {/* Show Tender and Pay driver */}
-                                          <ViewTenderProcessor deliveryDetailId={deliveryDetail.id} companyId={id} />
-                                           
-                                        
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 ))}
+                                  <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Pickup Date</th>
+                                            <th className="px-4 py-2">Pickup Region</th>
+                                            <th className="px-4 py-2">Delivered Region</th>
+                                            <th className="px-4 py-2">Priority</th>
+                                            <th className="px-4 py-2">Description</th>
+                                            <th className="px-4 py-2">Actions</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {completeDeliveries.map((deliveryDetail, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                              <td className="px-4 py-2">Priority: {deliveryDetail.deliveryPriority}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                              <td className="px-4 py-2">
+                                                <ViewTenderProcessor 
+                                                  deliveryDetailId={deliveryDetail.id} 
+                                                  companyId={id} 
+                                                />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+
                                 </>
                                 ):(
                                   <></>
@@ -857,7 +671,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 {symbol}
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-1.5 p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -867,11 +681,11 @@ export default function CompanyOverviewPage({ processorCompany }) {
                           className="h-[35px] w-[35px]"
                         />
                         <div className="flex flex-col items-center justify-start w-[67%] mb-2.5 gap-2">
-                          <Text size="lg" as="p" className="text-center">
-                            Total Expenses
+                        <Text size="lg" as="p" className="text-center">
+                          Wallet Balance
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                             {balanceInfo} {symbol}
                           </Text>
                         </div>
                       </div>
@@ -889,7 +703,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 {symbol}
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-[5px] p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -903,7 +717,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                             Total Revenue
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                            20,850 {symbol}
                           </Text>
                         </div>
                       </div>

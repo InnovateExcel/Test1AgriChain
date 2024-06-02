@@ -66,6 +66,7 @@ service: () -> {
     getFarmerSalesAdvert: (text) -> (variant {Ok:record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}; Err:variant {PaymentFailed:text; InvalidPayload:text; NotFound:text; PaymentCompleted:text}}) query;
     getFarmerSalesAdvertsApprovedByProcessorCompany: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;
     getFarmerSalesAdvertsApprovedForFarmer: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;
+    getFarmerSalesAdvertsCompletedForFarmer: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;
     getFarmerSalesAdvertsOfFarmer: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;
     getFarmerSalesAdvertsOfProcessorCompany: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;
     getFarmerSalesAdvertsOfProduct: (text) -> (vec record {id:text; status:text; farmerId:text; processorCompanyId:text; productId:text; quantity:nat64; price:nat64; farmerPaid:bool}) query;

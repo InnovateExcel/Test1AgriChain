@@ -10,7 +10,7 @@ export default function Header({ ...props }) {
           <div className="flex flex-row justify-start items-start gap-3">
             <Img src={img_image_493} alt="image496_one" className="h-[33px]" />
             <Text size="6xl" as="p" className="mt-[3px]">
-              ChainFlow
+              AgriChain♾️
             </Text>
           </div>
           <Img

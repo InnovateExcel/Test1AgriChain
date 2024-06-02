@@ -4,8 +4,8 @@ import { Notification } from "../../components/utils/Notifications";
 import Login from "./Login";
 import { getProcessingCompanyByOwner } from "../../utils/processorCompany";
 import { Loader } from "../../components/utils";
-import ActivateClientAccount from "./ActivateClientAccount";
 import CompanyOverviewPage from "./CompanyOverview";
+import ActivateProcessorAccount from "./ActivateProcessorAccount";
 
 const Client = () => {
   const [processor, setProcessor] = useState({});
@@ -45,7 +45,7 @@ const Client = () => {
               <CompanyOverviewPage processorCompany={processor} />
             </main>
           ) : (
-            <ActivateClientAccount
+            <ActivateProcessorAccount
               fetchClient={fetchProcessorCompany}
             />
           )

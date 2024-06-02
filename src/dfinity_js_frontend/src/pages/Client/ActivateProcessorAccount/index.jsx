@@ -5,7 +5,7 @@ import { createClientCompany, createProcessingCompany } from "../../../utils/pro
 import { Img, Text, Button, Header } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 
-export default function ActivateClientAccount({ fetchClient }) {
+export default function ActivateProcessorAccount({ fetchClient }) {
   // usestate for the form fields
 
   const [name, setName] = useState("");

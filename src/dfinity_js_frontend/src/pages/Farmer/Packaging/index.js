@@ -54,51 +54,50 @@ function ProductPackaging({ product }) {
           <Loader />
         ) : (
           <>
-            <BButton
+            <Button
               color="blue_gray_900_02"
-              size="12xl"
               className="min-w-[115px] rounded-[28px]"
-              variant="primary"
+              size="12xl"
               onClick={handleShow}
             >
               Package 
-            </BButton>
+            </Button>
   
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Package Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                    <FloatingLabel controlId="floatingInput" label="Packaging Material">
+                    <Form className="max-w-lg mx-auto p-2 bg-white shadow-md rounded-lg">
+                    <FloatingLabel controlId="floatingInput" label="Packaging Material" className="my-2">
                         <Form.Control
                         type="text"
                         placeholder="Packaging Material"
                         onChange={(e) => setPackagingMaterial(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Packaging Type">
+                    <FloatingLabel controlId="floatingInput" label="Packaging Type" className="my-2">
                         <Form.Control
                         type="text"
                         placeholder="Packaging Type"
                         onChange={(e) => setPackagingType(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Packaging Size">
+                    <FloatingLabel controlId="floatingInput" label="Packaging Size" className="my-2">
                         <Form.Control
                         type="text"
                         placeholder="Packaging Size"
                         onChange={(e) => setPackagingSize(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Packaging Color">
+                    <FloatingLabel controlId="floatingInput" label="Packaging Color" className="my-2">
                         <Form.Control
                         type="text"
                         placeholder="Packaging Color"
                         onChange={(e) => setPackagingColor(e.target.value)}
                         />
                     </FloatingLabel>
-                    <FloatingLabel controlId="floatingInput" label="Packaging Date">
+                    <FloatingLabel controlId="floatingInput" label="Packaging Date" className="my-2">
                         <Form.Control
                         type="date"
                         placeholder="Packaging Date"
@@ -109,7 +108,8 @@ function ProductPackaging({ product }) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                    variant="primary"
+                     color="blue_gray_900_02"
+                    className="min-w-[115px] rounded-[28px]"
                     onClick={() => {
                         handleSubmit();
                         handleClose();

@@ -15,25 +15,14 @@ import * as Images from "../../../assets/images";
 import Wallet from "../../../components/Wallet";
 import { toast } from "react-toastify";
 
-import { createQuotation, getTenderedDeliveryDetailsForDistributorCompany } from "../../../utils/tender";
-import {
-  getNewOrders,
-  getSupplyCompanyActiveOrders,
-  getSupplyCompanyCompletedOrders,
-  getSupplyCompanyNewOrders,
-  payDriver,
-} from "../../../utils/distributorsCompany";
-import { addDriverIdToDeliveryDetails, assignDriver, getAcceptedDeliveryDetailsInDistributorsCompany, getCompletedDeliveryDetailsForDistributorCompany, getDeliveryDetailsPickedUpForDistributorCompany, getNewDeliveryDetailsInDistributorsCompany, updateOrderStatus } from "../../../utils/deliveries";
-import CreateQuotation from "../../quatation/CreateQuatation";
+
+import { addDriverIdToDeliveryDetails, assignDriver, getAcceptedDeliveryDetailsInDistributorsCompany, getCompletedDeliveryDetailsForDistributorCompany, getDeliveryDetailsPickedUpForDistributorCompany, getNewDeliveryDetailsInDistributorsCompany } from "../../../utils/deliveries";
 import AssignDrivers from "../components/AssignDriver";
-import UpdateStatus from "../components/UpdateStatus";
-import PayDriver from "../components/PayDriver";
 import DeliveryTender from "../DeliveryTender/DeliveryTender";
 import AssignVehicle from "../components/AssignVehicle";
 import { assignVehicle } from "../../../utils/driver";
 import AddVehicle from "../AddVehicle/AddVehicle";
 import { createVehicle } from "../../../utils/vehicle";
-import { getFarmerSalesAdvertsApprovedByProcessorCompany } from "../../../utils/advert";
 import ViewTender from "../components/ViewTender";
 
 const stauses = [
@@ -48,38 +37,19 @@ export default function CompanyOverviewPage({ distributor }) {
   const sliderRef = React.useRef(null);
   const [searchBarValue32, setSearchBarValue32] = React.useState("");
   const [loading, setLoading] = useState(false);
-  const [orderListings, setOrderListings] = useState([]);
-  const [completedOrders, setCompletedOrders] = useState([]);
-  const [currentOrders, setCurrentOrders] = useState([]);
-  const [newOrders, setNewOrders] = useState([]);
   const [deliveryDetails, setDeliveryDetails] = useState([]);
   const [pickedDeliveryDetails, setPickedDeliveryDetails] = useState([]);
   const [acceptedDeliveryDetails, setAcceptedDeliveryDetails] = useState([]);
   const [completeDeliveries, setCompleteDeliveries] = useState([]);
   const [tab, setTab] = useState("new");
+  const [balanceInfo, setBalanceInfo] = useState("0");
+  const symbol = "ICP";
+
+
 
   const { id } = distributor;
 
-  // createQuotation
-  const saveQuotation = async (data) => {
-    try {
-      setLoading(true);
 
-      data.shippingCost = parseInt(data.shippingCost, 10) * 10 ** 8;
-
-      await createQuotation(data).then((resp) => {
-        console.log(resp);
-        console.log(data);
-        fetchNewOrderListings();
-        toast(<NotificationSuccess text="Quotation added successfully." />);
-      });
-    } catch (error) {
-      console.log({ error });
-      toast(<NotificationError text="Failed to create a Quotation." />);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // addVehicleFunc
   const addVehicleFunc = async (data) => {
@@ -129,62 +99,15 @@ export default function CompanyOverviewPage({ distributor }) {
     }
   };
 
-  // update order status
-  const orderStatusUpdate = async (orderId, status) => {
-    try {
-      setLoading(true);
-      console.log(orderId, status);
-      await updateOrderStatus(orderId, status);
-
-      fetchCompletedOrders();
-      fetchCurrentOrders();
-      toast(<NotificationSuccess text="Order status updated successfully." />);
-    } catch (error) {
-      console.log(error);
-      toast(<NotificationError text="Failed to update order status." />);
-    }
-  };
  
 
 
 
-  // fetch new order listings
-  const fetchNewOrderListings = useCallback(async () => {
-    try {
-      setLoading(true);
-      const orders = await getNewOrders();
-      setOrderListings(orders);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  });
 
-  const fetchNewOrders = useCallback(async () => {
-    try {
-      setLoading(true);
-      const orders = await getSupplyCompanyNewOrders(id);
-      console.log("new orders", orders);
-      setNewOrders(orders);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  });
 
-  const fetchCompletedOrders = useCallback(async () => {
-    try {
-      setLoading(true);
-      const orders = await getSupplyCompanyCompletedOrders(id);
-      setCompletedOrders(orders);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  });
+
+
+
 
 
   // getCompletedDeliveryDetailsForDistributorCompany
@@ -200,17 +123,7 @@ export default function CompanyOverviewPage({ distributor }) {
     }
   });
   
-  const fetchCurrentOrders = useCallback(async () => {
-    try {
-      setLoading(true);
-      const orders = await getSupplyCompanyActiveOrders(id);
-      setCurrentOrders(orders);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  });
+
 
   const fetchNewDeliveryDetails = useCallback(async () => {
     try {
@@ -252,19 +165,13 @@ export default function CompanyOverviewPage({ distributor }) {
   
 
   useEffect(() => {
-    fetchNewOrders();
-    fetchCompletedOrders();
-    fetchCurrentOrders();
-    fetchNewOrderListings();
     fetchActiveDeliveryDetails();
     fetchNewDeliveryDetails();
     fetchPickedDeliveryDetails();
     fetchCompleteDeliveries();
   }, []);
 
-  // console.log("newOrders", newOrders);
-  // console.log("completedOrders", completedOrders);
-  // console.log("currentOrders", currentOrders);
+
 
   console.log("deliveryDetails", deliveryDetails);
   console.log("acceptedDeliveryDetails", acceptedDeliveryDetails);
@@ -278,7 +185,7 @@ export default function CompanyOverviewPage({ distributor }) {
       ) : (
         <>
           <Helmet>
-            <title>dApp Hackthon-Javascript</title>
+            <title>AgriChain♾️</title>
             <meta
               name="description"
               content="Web site created using create-react-app"
@@ -290,12 +197,10 @@ export default function CompanyOverviewPage({ distributor }) {
                 <div className="flex flex-row justify-between items-center w-full">
                   <div className="flex flex-row justify-end items-center w-full gap-[21px]">
                     <AddVehicle save={addVehicleFunc} />
-                    <Wallet />
+                    <Wallet setBalanceInfo={setBalanceInfo} />
                   </div>
                 </div>
-                <Text size="12xl" as="p" className="mt-6 ml-[3px]">
-                  Company {distributor.name} Overview
-                </Text>
+            
                 <div className="flex flex-row justify-start items-start w-full mt-[45px] gap-[29px]">
                   <div className="flex flex-col items-center justify-start w-[66%] gap-7">
                     <div className="flex flex-row justify-start w-full p-[29px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -303,26 +208,34 @@ export default function CompanyOverviewPage({ distributor }) {
                         <Text size="4xl" as="p">
                           Overview
                         </Text>
-                        <Text as="p" className="mt-[31px] ml-[92px]">
-                          Total Revenue
-                        </Text>
-                        <div className="flex flex-row justify-between w-[96%] ml-[15px]">
-                          <Img
-                            src={Images.img_credit_card_1}
-                            alt="creditcardone"
-                            className="h-[40px] w-[40px] mb-px"
-                          />
-                          <Text size="12xl" as="p">
-                            $9,876.33
-                          </Text>
+                        <div className="max-w-lg mx-auto p-3 bg-gray-200 shadow-md rounded-lg w-full">
+                          <div className="grid grid-cols-2 gap-1">
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Company Name</p>
+                              <p className="text-gray-600">{distributor.name}</p>
+                            </div>
+                            <div className="mb-1">
+                              <p className="text-gray-700 font-bold">Contact Email</p>
+                              <p className="text-gray-600">{distributor.email}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Business Type</p>
+                              <p className="text-gray-600">{distributor.bussinessType}</p>
+                            </div>
+                            <div className="">
+                              <p className="text-gray-700 font-bold">Years in Operation</p>
+                              <p className="text-gray-600">{distributor.YearsInOperation}</p>
+                            </div>
+                          </div>
                         </div>
+                        
                       </div>
                     </div>
                     <div className="flex flex-row justify-end w-full p-[13px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-center justify-start w-[97%] mt-4 mr-1 gap-8">
                         <div className="flex flex-row justify-between items-center w-full">
                           <Text size="3xl" as="p">
-                            Completed Jobs
+                            Completed Delivery
                           </Text>
                           <SelectBox
                             size="xs"
@@ -363,18 +276,7 @@ export default function CompanyOverviewPage({ distributor }) {
                                 className="h-[241px]"
                               />
                               <div className="flex flex-row justify-between items-center w-[98%]">
-                                <Text size="2xl" as="p">
-                                  July
-                                </Text>
-                                <div className="flex flex-row justify-between w-auto">
-                                  <Text as="p" className="mt-[3px]">
-                                    August
-                                  </Text>
-                                  <Text as="p">Septemb</Text>
-                                  <Text as="p">October</Text>
-                                  <Text as="p">Novembe</Text>
-                                  <Text as="p">Decembe</Text>
-                                </div>
+                               
                               </div>
                             </div>
                           </div>
@@ -387,7 +289,7 @@ export default function CompanyOverviewPage({ distributor }) {
                       selectedTabPanelClassName="mt-[20px] mb-[7px] ml-[7px] relative tab-panel--selected"
                     >
                       <Text size="6xl" as="p" className="mt-4 ml-[9px]">
-                        Jobs
+                        Deliveries
                       </Text>
                       <div className="flex flex-col items-start justify-start w-full  mt-4 gap-[19px]">
                         <TabList className="flex flex-row justify-between w-[98%] mt-2 p-3 items-center bg-white-A700_01 gap-[30px] shadow-xs rounded-[25px]">
@@ -444,259 +346,128 @@ export default function CompanyOverviewPage({ distributor }) {
                                 <div className="h-[3px] w-[98%] bg-gray-400_02" />
                                 {tab === "new" ? (
                                   <>
-                                    {deliveryDetails.map((deliveryDetail, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.pickupDate}
-                                              </Text>
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.pickupRegion}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.deliveredRegion}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                Priority:{deliveryDetail.deliveryPriority}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.deliveryDescription}
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
+                                    <div className="overflow-x-auto w-full">
+                                      <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                        <thead>
+                                          <tr>
+                                            <th className="px-4 py-2">Pickup Date</th>
+                                            <th className="px-4 py-2">Pickup Region</th>
+                                            <th className="px-4 py-2">Delivered Region</th>
+                                            <th className="px-4 py-2">Priority</th>
+                                            <th className="px-4 py-2">Description</th>
+                                            <th className="px-4 py-2">Actions</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {deliveryDetails.map((deliveryDetail, index) => (
+                                            <tr key={index} className="bg-white border-t">
+                                              <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.deliveryPriority}</td>
+                                              <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                              <td className="px-4 py-2">
+                                                <DeliveryTender deliveryDetail={deliveryDetail} />
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
 
-                                              <DeliveryTender deliveryDetail={deliveryDetail} />
-                                              
-                                              {/* <AssignDrivers
-                                                order={deliveryDetail}
-                                                save={saveDriver}
-                                              /> */}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
                                   </>
                                 ) : tab === "Accepted" ? (
                                   <>
-                                     {acceptedDeliveryDetails.map((deliveryDetail, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                      >
-                                        <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                          <Img
-                                            src={Images.img_image_389}
-                                            alt="image389_one"
-                                            className="w-[86px] object-cover rounded-[12px]"
-                                          />
-                                          <div className="flex flex-col w-[84%]">
-                                            <div className="flex flex-row justify-between items-center">
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.pickupDate}
-                                              </Text>
-                                              <Text
-                                                size="3xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.pickupRegion}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.deliveredRegion}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                Priority:{deliveryDetail.deliveryPriority}
-                                              </Text>
-                                              <Text
-                                                size="2xl"
-                                                as="p"
-                                                className="mb-px "
-                                              >
-                                                {deliveryDetail.deliveryDescription}
-                                              </Text>
-                                            </div>
-                                            <div className="mt-2 flex justify-between items-center">
-                                              
-                                              <AssignDrivers
-                                                deliveryDetail={deliveryDetail}
-                                                save={saveDriver}
-                                              />
-
-                                              <AssignVehicle 
-                                                 deliveryDetail={deliveryDetail}
-                                                 save={saveVehicle}
-                                              />
-
-                                            </div>
-                                          </div>
-                                        </div>
+                                     <div className="overflow-x-auto w-full">
+                                        <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                          <thead>
+                                            <tr>
+                                              <th className="px-4 py-2">Pickup Date</th>
+                                              <th className="px-4 py-2">Pickup Region</th>
+                                              <th className="px-4 py-2">Delivered Region</th>
+                                              <th className="px-4 py-2">Priority</th>
+                                              <th className="px-4 py-2">Description</th>
+                                              <th className="px-4 py-2">Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {acceptedDeliveryDetails.map((deliveryDetail, index) => (
+                                              <tr key={index} className="bg-white border-t">
+                                                <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                                <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                                <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                                <td className="px-4 py-2">Priority: {deliveryDetail.deliveryPriority}</td>
+                                                <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                                <td className="px-4 py-2 flex justify-between items-center">
+                                                  <AssignDrivers deliveryDetail={deliveryDetail} save={saveDriver} />
+                                                  <AssignVehicle deliveryDetail={deliveryDetail} save={saveVehicle} />
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
                                       </div>
-                                    ))}
+
                                   </>
                                 ) : tab === "Picked" ? (
                                   <>
-                                  {pickedDeliveryDetails.map((deliveryDetail, index) => (
-                                   <div
-                                     key={index}
-                                     className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                   >
-                                     <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                       <Img
-                                         src={Images.img_image_389}
-                                         alt="image389_one"
-                                         className="w-[86px] object-cover rounded-[12px]"
-                                       />
-                                       <div className="flex flex-col w-[84%]">
-                                         <div className="flex flex-row justify-between items-center">
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupDate}
-                                           </Text>
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveredRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             Priority:{deliveryDetail.deliveryPriority}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveryDescription}
-                                           </Text>
-                                         </div>
-                                         <div className="mt-2 flex justify-between items-center">
-                                           
-                                        
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 ))}
+                                  <div className="overflow-x-auto w-full">
+                                    <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                      <thead>
+                                        <tr>
+                                          <th className="px-4 py-2">Pickup Date</th>
+                                          <th className="px-4 py-2">Pickup Region</th>
+                                          <th className="px-4 py-2">Delivered Region</th>
+                                          <th className="px-4 py-2">Priority</th>
+                                          <th className="px-4 py-2">Description</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {pickedDeliveryDetails.map((deliveryDetail, index) => (
+                                          <tr key={index} className="bg-white border-t">
+                                            <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                            <td className="px-4 py-2">Priority: {deliveryDetail.deliveryPriority}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+
                                </>
                                 ): tab === "completed" ? (
                                   <>
-                                  {completeDeliveries.map((deliveryDetail, index) => (
-                                   <div
-                                     key={index}
-                                     className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                   >
-                                     <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                       <Img
-                                         src={Images.img_image_389}
-                                         alt="image389_one"
-                                         className="w-[86px] object-cover rounded-[12px]"
-                                       />
-                                       <div className="flex flex-col w-[84%]">
-                                         <div className="flex flex-row justify-between items-center">
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupDate}
-                                           </Text>
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveredRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             Priority:{deliveryDetail.deliveryPriority}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveryDescription}
-                                           </Text>
-                                         </div>
-                                         <div className="mt-2 flex justify-between items-center">
-                                          {/* Show Tender and Pay driver */}
-                                          <ViewTender deliveryDetailId={deliveryDetail.id} companyId={id} />
-                                           
-                                        
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 ))}
+                                  <div className="overflow-x-auto w-full">
+                                    <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                      <thead>
+                                        <tr>
+                                          <th className="px-4 py-2">Pickup Date</th>
+                                          <th className="px-4 py-2">Pickup Region</th>
+                                          <th className="px-4 py-2">Delivered Region</th>
+                                          <th className="px-4 py-2">Priority</th>
+                                          <th className="px-4 py-2">Description</th>
+                                          <th className="px-4 py-2">Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {completeDeliveries.map((deliveryDetail, index) => (
+                                          <tr key={index} className="bg-white border-t">
+                                            <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                            <td className="px-4 py-2">Priority: {deliveryDetail.deliveryPriority}</td>
+                                            <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                            <td className="px-4 py-2">
+                                              <ViewTender deliveryDetailId={deliveryDetail.id} companyId={id} />
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+
                                 </>
                                 ):(
                                   <>
@@ -708,83 +479,7 @@ export default function CompanyOverviewPage({ distributor }) {
                         </TabPanel>
                       ))}
                     </Tabs>
-                    <Tabs
-                      className="flex flex-col items-start justify-end w-full p-[21px] bg-blue_gray-900_0c shadow-xs rounded-[19px]"
-                      selectedTabClassName="!text-gray-900_01 bg-blue_gray-900_0c shadow-xs rounded-[20px]"
-                      selectedTabPanelClassName="mt-[88px] mb-[7px] ml-[7px] relative tab-panel--selected"
-                    >
-                      <Text size="6xl" as="p" className="mt-4 ml-[9px]">
-                        New Orders Listings
-                      </Text>
-                      <div className="w-[99%] ">
-                        <div className="flex flex-col items-center justify-start w-[99%] mb-[7px] ml-[7px]">
-                          <div className="flex flex-col items-center justify-start w-full gap-[17px]">
-                            <div className="flex flex-col w-full pb-[18px] gap-[17px]">
-                              {
-                                <>
-                                  {orderListings.map((order, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                    >
-                                      <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                        <Img
-                                          src={Images.img_image_389}
-                                          alt="image389_one"
-                                          className="w-[86px] object-cover rounded-[12px]"
-                                        />
-                                        <div className="flex flex-col w-[84%]">
-                                          <div className="flex flex-row justify-between items-center">
-                                            <Text
-                                              size="3xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {order.orderName}
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {order.priority}
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {order.category}
-                                            </Text>
-                                            <Text
-                                              size="2xl"
-                                              as="p"
-                                              className="mb-px "
-                                            >
-                                              {order.orderWeight}
-                                            </Text>
-                                          </div>
-                                          <div className="mt-2 flex justify-between items-center">
-                                            <Text size="2xl" as="p">
-                                              {order.deliveryAddress}
-                                            </Text>
-                                            <CreateQuotation
-                                              supplierId={id}
-                                              order={order}
-                                              save={saveQuotation}
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Tabs>
+                    
 
                     <div className="flex flex-row justify-start w-full p-7 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-start justify-start w-[95%] mt-[9px] ml-[3px]">
@@ -856,7 +551,7 @@ export default function CompanyOverviewPage({ distributor }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 {symbol}
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-1.5 p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -866,11 +561,11 @@ export default function CompanyOverviewPage({ distributor }) {
                           className="h-[35px] w-[35px]"
                         />
                         <div className="flex flex-col items-center justify-start w-[67%] mb-2.5 gap-2">
-                          <Text size="lg" as="p" className="text-center">
-                            Total Expenses
+                        <Text size="lg" as="p" className="text-center">
+                          Wallet Balance
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                             {balanceInfo} {symbol}
                           </Text>
                         </div>
                       </div>
@@ -888,7 +583,7 @@ export default function CompanyOverviewPage({ distributor }) {
                           as="p"
                           className="mt-[9px] mb-2.5 text-center"
                         >
-                          $20,850
+                          20,850 {symbol}
                         </Text>
                       </div>
                       <div className="flex flex-col items-center justify-start w-full gap-[5px] p-2.5 bg-blue_gray-900_0c shadow-xs rounded-[19px]">
@@ -902,7 +597,7 @@ export default function CompanyOverviewPage({ distributor }) {
                             Total Revenue
                           </Text>
                           <Text size="4xl" as="p" className="text-center">
-                            $20,850
+                            20,850 {symbol}
                           </Text>
                         </div>
                       </div>
@@ -993,84 +688,23 @@ export default function CompanyOverviewPage({ distributor }) {
                               </div>
                             </div>
                           </div>
-                          <div className="flex flex-row justify-start items-start w-full gap-1.5">
-                            <Img
-                              src={Images.img_image_194}
-                              alt="image183_one"
-                              className="h-[52px] w-[52px] rounded-[50%]"
-                            />
-                            <div className="flex flex-col items-start justify-start w-[80%] gap-[17px]">
-                              <div className="flex flex-col items-start justify-start w-[97%] ml-[7px]">
-                                <div className="flex flex-row justify-between items-center w-full">
-                                  <Text size="2xl" as="p">
-                                    David Johnson
-                                  </Text>
-                                  <Img
-                                    src={Images.img_image_205}
-                                    alt="image205_one"
-                                    className="w-[9%] object-cover rounded-[9px]"
-                                  />
-                                </div>
-                                <Text as="p" className="mt-1.5">
-                                  on Product - SKU789
-                                </Text>
-                                <Text as="p" className="mt-5">
-                                  Best product I&#39;ve ever
-                                </Text>
-                              </div>
-                              <div className="flex flex-row justify-between w-[66%]">
-                                <Img
-                                  src={Images.img_chat_circle_dots}
-                                  alt="image"
-                                  className="h-[24px] w-[24px] opacity-0.78"
-                                />
-                                <Img
-                                  src={Images.img_thumbs_up_1}
-                                  alt="thumbsupone_one"
-                                  className="h-[24px] w-[24px] opacity-0.78"
-                                />
-                              </div>
-                            </div>
-                          </div>
+                          
                         </div>
                         <a
                           href="View All"
                           className="flex justify-center items-center w-[289px] h-[47px] px-[35px] py-4 bg-white-A700_01 text-shadow-ts1 rounded-[18px]"
                         >
-                          <Text size="2xl" as="p" className="!text-gray-500_02">
+                          <Text size="2xl" as="p" 
+                          color="blue_gray_900_02"
+                          className="min-w-[115px] rounded-[28px] !text-gray-500_02"
+                          >
                             View All
                           </Text>
                         </a>
                       </div>
                     </div>
                     <div className="flex flex-row justify-center w-full p-[22px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
-                      <div className="flex flex-col items-start justify-start w-[95%] mt-3.5 gap-8">
-                        <Text size="3xl" as="p" className="ml-0.5">
-                          Manage Refund Requests
-                        </Text>
-                        <div className="flex flex-row justify-start items-start ml-[9px] gap-[19px]">
-                          <Img
-                            src={Images.img_image_196}
-                            alt="image196_one"
-                            className="w-[13%] mt-1 object-cover rounded-[12px]"
-                          />
-                          <Text as="p" className="w-[79%] !leading-[18px]">
-                            You have 52 open refund
-                            <br />
-                            requests to process. This
-                            <br />
-                            includes 8 new requests
-                          </Text>
-                        </div>
-                        <a
-                          href="View All"
-                          className="flex justify-center items-center w-[280px] h-[39px] px-[35px] py-3 border-gray-600_07 border border-solid bg-white-A700_01 text-shadow-ts rounded-[19px]"
-                        >
-                          <Text size="2xl" as="p" className="!text-gray-500_02">
-                            View All
-                          </Text>
-                        </a>
-                      </div>
+                      
                     </div>
                     <div className="flex flex-col items-start justify-start w-full gap-[25px] p-[23px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <Text size="3xl" as="p" className="mt-[15px] ml-[9px]">

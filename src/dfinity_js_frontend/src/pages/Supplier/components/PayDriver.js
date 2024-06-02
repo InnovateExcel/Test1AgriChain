@@ -17,11 +17,11 @@ const PayDriver = ({ deliveryTender, save }) => {
         size="11xl"
         className="min-w-[115px] items-center gap-2 flex rounded-[28px]"
       >
-        <i className="bi bi-plus"></i> Pay Driver
+        Pay Driver
       </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Pay Driver for {deliveryTender.tenderTitle} Order</Modal.Title>
+          <Modal.Title>Pay Driver for {deliveryTender.tenderTitle} Delivery</Modal.Title>
         </Modal.Header>
         <Form>
           <Modal.Body>

@@ -2,11 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import { login } from "../../utils/auth";
 import { Notification } from "../../components/utils/Notifications";
 import Login from "./Login";
-import { getProcessingCompanyByOwner } from "../../utils/processorCompany";
 import { Loader } from "../../components/utils";
-import ActivateClientAccount from "./ActivateClientAccount";
 import CompanyOverviewPage from "./CompanyOverview";
 import { getFarmerByOwner } from "../../utils/farmer";
+import ActivateFarmerAccount from "./ActivateFarmerAccount";
 
 const Client = () => {
   const [farmer, setFarmer] = useState({});
@@ -46,7 +45,7 @@ const Client = () => {
               <CompanyOverviewPage farmer={farmer} />
             </main>
           ) : (
-            <ActivateClientAccount
+            <ActivateFarmerAccount
               fetchFarmer={fetchFarmer}
             />
           )

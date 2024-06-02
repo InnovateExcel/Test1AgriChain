@@ -17,42 +17,42 @@ const AddProduct = ({ save }) => {
 
   return (
     <>
-      <BButton
+      <Button
       color="blue_gray_900_02"
-      size="12xl"
       className="min-w-[115px] rounded-[28px]"
-      variant="primary" onClick={handleShow}>
+        size="12xl"
+      onClick={handleShow}>
         Add Product
-      </BButton>
+      </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} >
         <Modal.Header closeButton>
           <Modal.Title>Add Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <FloatingLabel controlId="floatingInput" label="Product Name">
+          <Form className="max-w-lg mx-auto p-2 bg-white shadow-md rounded-lg">
+            <FloatingLabel controlId="floatingInput" label="Product Name" className="my-2">
               <Form.Control
                 type="text"
                 placeholder="Product Name"
                 onChange={(e) => setName(e.target.value)}
               />
             </FloatingLabel>
-            <FloatingLabel controlId="floatingInput" label="Description">
+            <FloatingLabel controlId="floatingInput" label="Product Description" className="my-2">
               <Form.Control
                 type="text"
                 placeholder="Description"
                 onChange={(e) => setDescription(e.target.value)}
               />
             </FloatingLabel>
-            <FloatingLabel controlId="floatingInput" label="Category">
+            <FloatingLabel controlId="floatingInput" label="Product Category" className="my-2">
               <Form.Control
                 type="text"
                 placeholder="Category"
                 onChange={(e) => setCategory(e.target.value)}
               />
             </FloatingLabel>
-            <FloatingLabel controlId="floatingInput" label="Image">
+            <FloatingLabel controlId="floatingInput" label="Image Url" className="my-2">
               <Form.Control
                 type="text"
                 placeholder="Image URL"
@@ -63,8 +63,7 @@ const AddProduct = ({ save }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="primary"
-            
+            color="blue_gray_900_02"
             onClick={() => {
               save({ name, description, category, image });
               handleClose();

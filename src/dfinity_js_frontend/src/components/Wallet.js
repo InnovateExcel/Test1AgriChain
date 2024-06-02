@@ -5,7 +5,7 @@ import { logout as destroy } from "../utils/auth";
 import { balance as principalBalance } from "../utils/ledger";
 import { Img } from "./utils";
 
-const Wallet = () => {
+const Wallet = ({setBalanceInfo}) => {
   const isAuthenticated = window.auth.isAuthenticated;
 
   const principal = window.auth.principalText;
@@ -17,6 +17,7 @@ const Wallet = () => {
   const getBalance = useCallback(async () => {
     if (isAuthenticated) {
       setBalance(await principalBalance());
+      setBalanceInfo(await principalBalance());
     }
   });
 

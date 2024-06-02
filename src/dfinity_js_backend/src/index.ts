@@ -1564,6 +1564,21 @@ export default Canister({
     }
   ),
 
+  // getFarmerSalesAdvertsCompletedForFarmer //paid
+  getFarmerSalesAdvertsCompletedForFarmer: query(
+    [text],
+    Vec(Types.FarmerSaleAdvert),
+    (farmerId) => {
+      const farmerSalesAdverts = FarmerSaleAdvertStorage.values();
+      return farmerSalesAdverts.filter(
+        (farmerSalesAdvert) =>
+          farmerSalesAdvert.farmerId === farmerId &&
+          farmerSalesAdvert.farmerPaid === true && farmerSalesAdvert.status === "Completed"
+      );
+    }
+  ),
+  
+
   // fetchPaidAdverts
   getPaidAdverts: query(
     [text],

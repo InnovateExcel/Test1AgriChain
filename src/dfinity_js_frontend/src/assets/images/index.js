@@ -65,6 +65,7 @@ import img_calendar from "./images/img_calendar.svg";
 import img_image_233 from "./images/img_image_233.png";
 import img_image_527 from "./images/img_image_527.png";
 import img_image_693 from "./images/img_image_693.png";
+import img_image_a from "./images/img_image_a.png";
 import img_c_check_1 from "./images/img_c_check_1.svg";
 import img_image_234 from "./images/img_image_234.png";
 import img_image_528 from "./images/img_image_528.png";
@@ -294,6 +295,7 @@ export {
   img_image_233,
   img_image_527,
   img_image_693,
+  img_image_a,
   img_c_check_1,
   img_image_234,
   img_image_528,

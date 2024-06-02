@@ -10,10 +10,8 @@ import {
 } from "../../../components/utils";
 import * as Images from "../../../assets/images";
 import Wallet from "../../../components/Wallet";
-import MaintainanceRecord from "../../maintainanceRecords/MaintainanceRecord";
 import {
   createMaintainanceRecord,
-  getDriverCompletedOrders,
 } from "../../../utils/driver";
 import { toast } from "react-toastify";
 import { getCompletedDeliveryDetailsForDriver, getDeliveryDetailsPickedUp, getRecentDeliveryDetailsAssignedToDriver, markDeliveryDetailsAsCompleted, markDeliveryDetailsAsPicked } from "../../../utils/deliveries";
@@ -21,41 +19,16 @@ import { markProductAsPickedUp } from "../../../utils/product";
 
 export default function DriverDashboard({ driver, fetchDriver }) {
   const [loading, setLoading] = useState(false);
-  const [completedOrders, setCompletedOrders] = useState([]);
   const [completeDeliveries, setCompleteDeliveries] = useState([]);
   const [pickedDeliveries, setPickedDeliveries] = useState([]);
   const [activeDelivery, setActiveDelivery] = useState({});
+  const [balanceInfo, setBalanceInfo] = useState("0");
   const [tab, setTab] = useState("completed");
 
   const { id, maintainanceRecords } = driver;
+  const symbol = "ICP"
 
-  const save = async (data) => {
-    try {
-      setLoading(true);
-
-      createMaintainanceRecord(id, data).then((resp) => {
-        fetchDriver();
-        toast(<NotificationSuccess text="Maintainance added successfully." />);
-      });
-    } catch (error) {
-      console.log({ error });
-      toast(<NotificationError text="Failed to create a maintainance." />);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // function to get driver completed orders
-  const fetchCompletedOrders = useCallback(async () => {
-    try {
-      setLoading(true);
-      setCompletedOrders(await getDriverCompletedOrders(id));
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  });
+  
   // getCompletedDeliveryDetailsForDriver
   const fetchCompletedDelivery = useCallback(async () => {
     try {
@@ -149,13 +122,13 @@ export default function DriverDashboard({ driver, fetchDriver }) {
       ) : (
         <>
           <Helmet>
-            <title>dApp Hackthon-Javascript</title>
+            <title>AgriChain♾️</title>
             <meta
               name="description"
               content="Web site created using create-react-app"
             />
           </Helmet>
-          <div className="flex flex-row justify-start w-full border-rose-500 bg-gray-200 h-full shadow-sm">
+          <div className="flex flex-row justify-start w-full border-rose-500 bg-gray-200 h-full shadow-sm pt-16">
             <div className="flex flex-row justify-start items-start w-full gap-7 mx-auto max-w-[85%]">
               <div className="flex flex-col items-center justify-start w-[100%] mt-[2rem]">
                 <div className="h-[361px] w-full z-[1] relative">
@@ -168,7 +141,7 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                               Driver Overview
                             </Text>
                             <div className="flex flex-row justify-between items-center w-[64%]">
-                              <MaintainanceRecord save={save} />
+                            
                               <Img
                                 src={Images.img_image_399}
                                 alt="image399_one"
@@ -179,13 +152,13 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                                 alt="image386_one"
                                 className="w-[6%] object-cover rounded-[12px]"
                               />
-                              <Wallet />
+                              <Wallet setBalanceInfo={setBalanceInfo} />                              
                             </div>
                           </div>
-                          <div className="flex flex-row justify-between w-full">
-                            <div className="flex flex-row justify-between gap-4 items-center w-full">
-                              <div className="flex flex-row justify-start w-[38%] p-[22px] bg-white-A700_e0 shadow-xs rounded-[19px]">
-                                <div className="flex flex-col items-start justify-start w-[76%] mb-[21px] ml-[3px] gap-[7px]">
+                          <div className="flex flex-row justify-between w-full mb-[10px]">
+                            <div className="flex flex-row justify-between gap-4 items-start w-full">
+                              <div className="flex flex-row justify-start w-[38%] p-[22px] max-w-lg mx-auto p-3 bg-gray-200 shadow-md rounded-lg rounded-[19px]">
+                                <div className="flex flex-col items-start justify-start w-[76%]  mb-[21px] ml-[3px] gap-[7px]">
                                   <div className="flex gap-4">
                                     <Img
                                       src={Images.img_truck_1}
@@ -200,28 +173,35 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                                       Current Job
                                     </Text>
                                   </div>
-                                  <div className="flex flex-row justify-between items-center w-full">
-                                    <Text size="4xl" as="p">
-                                      {activeDelivery?.pickupDate}
-                                    </Text>
-                                    <Text size="4xl" as="p">
-                                      {activeDelivery?.deliveryPriority}
-                                    </Text>
+                                  <div className="">
+                                    <div className="grid grid-cols-2 gap-1">
+                                      <div className="mb-1">
+                                        <p className="text-gray-700 font-bold">pickup Date</p>
+                                        <p className="text-gray-600">{activeDelivery?.pickupDate}</p>
+                                      </div>
+                                      <div className="mb-1">
+                                        <p className="text-gray-700 font-bold">Delivery Priority</p>
+                                        <p className="text-gray-600">{activeDelivery?.deliveryPriority}</p>
+                                      </div>
+                                      <div className="">
+                                        <p className="text-gray-700 font-bold">Delivered Region</p>
+                                        <p className="text-gray-600">{activeDelivery?.deliveredRegion}</p>
+                                      </div>
+                                      <div className="">
+                                        <p className="text-gray-700 font-bold">Pickup Region</p>
+                                        <p className="text-gray-600">{activeDelivery?.pickupRegion}</p>
+                                      </div>
+                                      <Button
+                                        color="blue_gray_900_02"
+                                        className="rounded-[20px]"
+                                        size="6xl"
+                                        onClick={handleMarkProductAsPickedUp}
+                                      >
+                                        Mark as Picked
+                                      </Button>
+                                    </div>
                                   </div>
-                                  <Text size="4xl" as="p">
-                                    {activeDelivery?.deliveredRegion}
-                                  </Text>
-                                  <Text size="4xl" as="p">
-                                    {activeDelivery?.pickupRegion}
-                                  </Text>
-                                  <Button
-                                    color="blue_gray_900_0c"
-                                    size="6xl"
-                                    className="rounded-[20px]"
-                                    onClick={handleMarkProductAsPickedUp}
-                                  >
-                                    Mark as Picked
-                                  </Button>
+                                  
                                 </div>
                               </div>
                               <div className="flex flex-col items-start justify-start w-[68%] gap-[29px]">
@@ -243,13 +223,91 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                                     Completed Delivery
                                   </Button>
                                 </div>
+                                <div className="w-full">
+                            
+                                  <table className="table">
+                                    <thead className="thead-dark">
+                                      {tab === "Picked" ? ( 
+                                      <>
+                                      <div className="overflow-x-auto w-full">
+                                          <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                            <thead>
+                                              <tr>
+                                                <th className="px-4 py-2">Pickup Date</th>
+                                                <th className="px-4 py-2">Pickup Region</th>
+                                                <th className="px-4 py-2">Delivered Region</th>
+                                                <th className="px-4 py-2">Priority</th>
+                                                <th className="px-4 py-2">Description</th>
+                                                <th className="px-4 py-2">Actions</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              {pickedDeliveries && pickedDeliveries.map((deliveryDetail, index) => (
+                                                <tr key={index} className="bg-white border-t">
+                                                  <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveryPriority}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                                  <td className="px-4 py-2">
+                                                    <Button
+                                                      color="blue_gray_900_02"
+                                                      className="text-white rounded-[20px] px-4 py-2"
+                                                      onClick={() => handleMarkAsDelivered(deliveryDetail.id)}
+                                                    >
+                                                      Mark as Delivered
+                                                    </Button>
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+
+                                      </>
+                                      ) : tab === "completed" ? (
+                                        <>
+                                      <div className="overflow-x-auto w-full">
+                                          <table className="table-auto w-full bg-white-A700_01 shadow-xs rounded-[12px]">
+                                            <thead>
+                                              <tr>
+                                                <th className="px-4 py-2">Pickup Date</th>
+                                                <th className="px-4 py-2">Pickup Region</th>
+                                                <th className="px-4 py-2">Delivered Region</th>
+                                                <th className="px-4 py-2">Priority</th>
+                                                <th className="px-4 py-2">Description</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              {completeDeliveries && completeDeliveries.map((deliveryDetail, index) => (
+                                                <tr key={index} className="bg-white border-t">
+                                                  <td className="px-4 py-2">{deliveryDetail.pickupDate}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.pickupRegion}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveredRegion}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveryPriority}</td>
+                                                  <td className="px-4 py-2">{deliveryDetail.deliveryDescription}</td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+
+                                      </>
+
+                                      ):(
+                                        <>
+                                        </>
+                                      )}
+                                    </thead>
+                                  </table>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </header>
-                        <div className="w-full flex flex-row items-center justify-between gap-4">
-                          <div className="flex flex-row justify-start items-center w-[38%] mt-4  bg-blue_gray-900_0c shadow-xs rounded-[19px]">
-                            <div className="flex flex-row justify-start items-start w-[48%] p-2 mt-2.5 mb-[5px] gap-[11px]">
+                        <div className="w-full flex flex-row items-center justify-between gap-4 mb-[60px]">
+                          <div className="flex flex-row justify-start items-center w-[38%]  bg-blue_gray-900_0c shadow-xs rounded-[19px]">
+                            <div className="flex flex-row justify-start items-start w-[48%] p-2 mt-2.5 mb-[10px] gap-[11px]">
                               <Img
                                 src={Images.img_image_417}
                                 alt="image417_one"
@@ -260,12 +318,12 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                                   Expenses
                                 </Text>
                                 <Text size="4xl" as="p" className="text-center">
-                                  $20,850
+                                  20,850 {symbol}
                                 </Text>
                               </div>
                             </div>
                             {/* <div className="flex flex-row justify-start w-[50%] mt-[-89px] p-[17px] bg-blue_gray-900_0c shadow-xs rounded-[19px]"> */}
-                            <div className="flex flex-row justify-start items-start w-[48%] p-2 mt-2.5 mb-[5px] gap-[11px]">
+                            <div className="flex flex-row justify-start items-start w-[48%] p-2 mt-2.5 mb-[10px] gap-[11px]">
                               <Img
                                 src={Images.img_image_407}
                                 alt="image407_one"
@@ -273,165 +331,23 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                               />
                               <div className="flex flex-col items-start justify-start w-[73%] gap-1">
                                 <Text as="p" className="ml-[5px]">
-                                  Balance
+                                  Wallet Balance
                                 </Text>
                                 <Text size="4xl" as="p" className="text-center">
-                                  $20,850
+                                  {balanceInfo} {symbol}
                                 </Text>
                               </div>
                             </div>
                             {/* </div> */}
                           </div>
-                          <div className="w-[68%]">
-                            
-                            <table className="table">
-                              <thead className="thead-dark">
-                                {tab === "Picked" ? ( 
-                                 <>
-                                 {pickedDeliveries && pickedDeliveries.map((deliveryDetail, index) => (
-                                   <div
-                                     key={index}
-                                     className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                   >
-                                     <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                       <Img
-                                         src={Images.img_image_389}
-                                         alt="image389_one"
-                                         className="w-[86px] object-cover rounded-[12px]"
-                                       />
-                                       <div className="flex flex-col w-[84%]">
-                                         <div className="flex flex-row justify-between items-center">
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupDate}
-                                           </Text>
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveredRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             Priority:{deliveryDetail.deliveryPriority}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveryDescription}
-                                           </Text>
-                                         </div>
-                                         <div className="mt-2 flex justify-between items-center">
-
-                                          <Button
-                                            color="blue_gray_900_0c"
-                                            size="6xl"
-                                            className="rounded-[20px]"
-                                            onClick={() => handleMarkAsDelivered(deliveryDetail.id)}
-                                          >
-                                            Mark as Delivered
-                                          </Button>
-
-                                           {/* <DeliveryTender deliveryDetail={deliveryDetail} /> */}
-                                           
-                                           {/* <AssignDrivers
-                                             order={deliveryDetail}
-                                             save={saveDriver}
-                                           /> */}
-                                         </div>
-                                       </div>
-                                     </div>
-                                   </div>
-                                 ))}
-                                 </>
-                                ) : tab === "completed" ? (
-                                  <>
-                                 {completeDeliveries && completeDeliveries.map((deliveryDetail, index) => (
-                                   <div
-                                     key={index}
-                                     className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                                   >
-                                     <div className="flex flex-row justify-start items-center w-[95%] gap-[17px]">
-                                       <Img
-                                         src={Images.img_image_389}
-                                         alt="image389_one"
-                                         className="w-[86px] object-cover rounded-[12px]"
-                                       />
-                                       <div className="flex flex-col w-[84%]">
-                                         <div className="flex flex-row justify-between items-center">
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupDate}
-                                           </Text>
-                                           <Text
-                                             size="3xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.pickupRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveredRegion}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             Priority:{deliveryDetail.deliveryPriority}
-                                           </Text>
-                                           <Text
-                                             size="2xl"
-                                             as="p"
-                                             className="mb-px "
-                                           >
-                                             {deliveryDetail.deliveryDescription}
-                                           </Text>
-                                         </div>
-                                        
-                                       </div>
-                                     </div>
-                                   </div>
-                                 ))}
-                                 </>
-
-                                ):(
-                                  <>
-                                  </>
-                                )}
-                              </thead>
-                            </table>
-                          </div>
+                          
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row justify-between items-start w-full mt-[-1px] gap-4">
-                  <div className="flex flex-col items-start justify-start w-[38%] mt-[29px]">
+                <div className="flex flex-row justify-between items-start w-full mt-[10px]  gap-4">
+                  <div className="flex flex-col items-start justify-start w-[38%] mt-[39px]">
                     <div className="flex flex-row justify-between items-start w-full">
                       <Text size="4xl" as="p" className="mt-[3px]">
                         Productivity view
@@ -466,56 +382,14 @@ export default function DriverDashboard({ driver, fetchDriver }) {
                         Octo
                       </Text>
                       <Text as="p" className="ml-[29px]">
-                        Mercedes Nov
+                         Nov
                       </Text>
                       <Text as="p" className="ml-[35px]">
                         Dec
                       </Text>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-4 w-[68%]">
-                    {tab === "maintainance" &&
-                      maintainanceRecords.map((maintainance, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-row justify-center w-full p-2 bg-white-A700_01 shadow-xs rounded-[12px]"
-                        >
-                          <div className="flex flex-row justify-start items-center w-[95%] ]">
-                            <div className="flex flex-col items-star justify-star w-[84%]">
-                              <div className="flex flex-row justify-between items-center">
-                                <Text size="3xl" as="p" className="mb-px ">
-                                  {maintainance.vehicleRegNo}
-                                </Text>
-                                <Text size="2xl" as="p" className="mb-px ">
-                                  {maintainance.date}
-                                </Text>
-                                <Text size="2xl" as="p" className="mb-px ">
-                                  {maintainance.mechanic}
-                                </Text>
-                                <Text size="2xl" as="p" className="mb-px ">
-                                  {maintainance.mechanicPhone}
-                                </Text>
-                                <Text size="2xl" as="p" className="mb-px ">
-                                  {maintainance.cost}
-                                </Text>
-                              </div>
-                              <div className="flex justify-between">
-
-                              <Text size="2xl" as="p" className="mt-[10px]">
-                                desc: {maintainance.description}
-                              </Text>
-                              <Text size="2xl" as="p" className="mt-[10px]">
-                                desc: {maintainance.mechanicAddress}
-                              </Text>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    
-
-                   
-                  </div>
+                 
                 </div>
               </div>
             </div>
