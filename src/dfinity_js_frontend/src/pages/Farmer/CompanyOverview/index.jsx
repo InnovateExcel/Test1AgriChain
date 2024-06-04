@@ -203,7 +203,7 @@ export default function CompanyOverviewPage({ farmer }) {
                             </div>
                             <div className="mb-1">
                               <p className="text-gray-700 font-bold">Contact Info</p>
-                              <p className="text-gray-600">{farmer.contactInfo}</p>
+                              <p className="text-gray-600">{farmer.contactInfo.toString()}</p>
                             </div>
                             <div className="">
                               <p className="text-gray-700 font-bold">Company Name</p>
@@ -533,13 +533,14 @@ export default function CompanyOverviewPage({ farmer }) {
                           Expand Your Customer Base
                         </Text>
                         <Text as="p" className="mt-[31px] ml-px">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Sed faucibus, elit sed
+                        For maximum harvest, focus on healthy soil with crop rotation and cover crops to boost yield 
+                        <br />
+                        while reducing reliance on external inputs.
                         </Text>
-                        <Text as="p" className="mt-2.5 ml-px">
+                        {/* <Text as="p" className="mt-2.5 ml-px">
                           pellentesque bibendum, est ligula feugiat libero, eu
                           convallis justo est et elit. Nulla
-                        </Text>
+                        </Text> */}
                         <div className="flex flex-row justify-start mt-[30px]">
                           <Button
                             size="6xl"
@@ -666,7 +667,7 @@ export default function CompanyOverviewPage({ farmer }) {
                                     />
                                     <div className="flex flex-col items-start justify-start w-[70%] gap-[7px]">
                                       <Text size="2xl" as="p">
-                                        John Doe
+                                        Company Processor
                                       </Text>
                                       <Text as="p">on Product - SKU123</Text>
                                     </div>
@@ -709,7 +710,7 @@ export default function CompanyOverviewPage({ farmer }) {
                     <div className="flex flex-row justify-center w-full p-[22px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-start justify-start w-[95%] mt-3.5 gap-8">
                         <Text size="3xl" as="p" className="ml-0.5">
-                          Manage Refund Requests
+                          Manage Pickup Records
                         </Text>
                         <div className="flex flex-row justify-start items-start ml-[9px] gap-[19px]">
                           <Img
@@ -718,7 +719,7 @@ export default function CompanyOverviewPage({ farmer }) {
                             className="w-[13%] mt-1 object-cover rounded-[12px]"
                           />
                           <Text as="p" className="w-[79%] !leading-[18px]">
-                            You have 52 open refund
+                            You have 52 open Pickup
                             <br />
                             requests to process. This
                             <br />

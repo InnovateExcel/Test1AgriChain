@@ -607,13 +607,11 @@ export default function CompanyOverviewPage({ processorCompany }) {
                           Expand Your Customer Base
                         </Text>
                         <Text as="p" className="mt-[31px] ml-px">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Sed faucibus, elit sed
+                          Focus on optimizing yield and minimizing waste: Implement efficient 
+                          processing techniques to maximize product extraction and minimize byproduct waste. Explore 
+                          repurposing byproducts into valuable secondary products.
                         </Text>
-                        <Text as="p" className="mt-2.5 ml-px">
-                          pellentesque bibendum, est ligula feugiat libero, eu
-                          convallis justo est et elit. Nulla
-                        </Text>
+                      
                         <div className="flex flex-row justify-start mt-[30px]">
                           <Button
                             size="6xl"
@@ -861,7 +859,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                     <div className="flex flex-row justify-center w-full p-[22px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <div className="flex flex-col items-start justify-start w-[95%] mt-3.5 gap-8">
                         <Text size="3xl" as="p" className="ml-0.5">
-                          Manage Refund Requests
+                          Manage Tender Requests
                         </Text>
                         <div className="flex flex-row justify-start items-start ml-[9px] gap-[19px]">
                           <Img
@@ -870,7 +868,7 @@ export default function CompanyOverviewPage({ processorCompany }) {
                             className="w-[13%] mt-1 object-cover rounded-[12px]"
                           />
                           <Text as="p" className="w-[79%] !leading-[18px]">
-                            You have 52 open refund
+                            You have 52 open Tender
                             <br />
                             requests to process. This
                             <br />

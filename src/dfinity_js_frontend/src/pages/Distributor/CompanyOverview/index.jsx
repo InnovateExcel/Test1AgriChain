@@ -487,13 +487,11 @@ export default function CompanyOverviewPage({ distributor }) {
                           Expand Your Customer Base
                         </Text>
                         <Text as="p" className="mt-[31px] ml-px">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Sed faucibus, elit sed
+                        Optimize your delivery routes and consider regional hubs to ensure faster product delivery to farmers,
+                        <br />
+                         improving their efficiency and your customer satisfaction.
                         </Text>
-                        <Text as="p" className="mt-2.5 ml-px">
-                          pellentesque bibendum, est ligula feugiat libero, eu
-                          convallis justo est et elit. Nulla
-                        </Text>
+                      
                         <div className="flex flex-row justify-start mt-[30px]">
                           <Button
                             size="6xl"
@@ -708,7 +706,7 @@ export default function CompanyOverviewPage({ distributor }) {
                     </div>
                     <div className="flex flex-col items-start justify-start w-full gap-[25px] p-[23px] bg-blue_gray-900_0c shadow-xs rounded-[19px]">
                       <Text size="3xl" as="p" className="mt-[15px] ml-[9px]">
-                        Product Ads
+                         Ads
                       </Text>
                       <div className="flex flex-col items-center justify-start w-full mb-[97px] gap-3">
                         <Text as="p">
@@ -724,9 +722,10 @@ export default function CompanyOverviewPage({ distributor }) {
                               />
                               <div className="flex flex-col items-start justify-start w-[76%] gap-[9px]">
                                 <Text size="2xl" as="p">
-                                  Product Name
+                                  Bulk Seed Delivery Solutions
                                 </Text>
-                                <Text as="p">Product details/description</Text>
+                                <Text as="p">Streamline your seed distribution with our efficient bulk delivery options. Reduce handling costs,
+                                 ensure timely arrivals for farmers, and boost your profitability.</Text>
                               </div>
                             </div>
                           </div>
@@ -739,9 +738,10 @@ export default function CompanyOverviewPage({ distributor }) {
                               />
                               <div className="flex flex-col items-start justify-start w-[76%] gap-[9px]">
                                 <Text size="2xl" as="p">
-                                  Product Name
+                                  Farm-to-Table Traceability Platform:
                                 </Text>
-                                <Text as="p">Product details/description</Text>
+                                <Text as="p">Empower your distributors with our innovative traceability platform.
+                                 Track produce from farm to fork, enhance transparency, and build trust with retailers and consumers.</Text>
                               </div>
                             </div>
                           </div>
@@ -754,9 +754,11 @@ export default function CompanyOverviewPage({ distributor }) {
                               />
                               <div className="flex flex-col items-start justify-start w-[76%] gap-[9px]">
                                 <Text size="2xl" as="p">
-                                  Product Name
+                                  Mobile Farmer Education App:
                                 </Text>
-                                <Text as="p">Product details/description</Text>
+                                <Text as="p">Revolutionize farmer outreach with our mobile education app.
+                                      Equip distributors with targeted content and resources to educate farmers on best practices,
+                                      driving sales of essential products.</Text>
                               </div>
                             </div>
                           </div>
